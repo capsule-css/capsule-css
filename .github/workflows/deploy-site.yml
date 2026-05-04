@@ -27,7 +27,9 @@ jobs:
           cache: false
 
       - name: Build Go binary
-        run: go build -o capsule ./cmd/capsule
+        run: |
+          go build -o capsule ./cmd/capsule
+          cp capsule site/capsule
 
       - uses: pnpm/action-setup@v4
         with:
