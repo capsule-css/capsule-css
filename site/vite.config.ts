@@ -9,6 +9,7 @@ import { resolve, dirname } from "node:path";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
+  base: process.env.GITHUB_ACTIONS ? "/capsule-css/" : "/",
   server: { port: 5175, strictPort: true },
   css: {
     postcss: { plugins: [autoprefixer(), cssnano()] },
