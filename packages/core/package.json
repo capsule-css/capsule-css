@@ -1,13 +1,15 @@
 {
   "name": "@capsule-css/core",
-  "version": "0.1.0-alpha.0",
+  "version": "0.1.0",
   "description": "capsule-css core — invokes the platform binary to compile .capsule.css files",
   "repository": "github:capsule-css/capsule-css",
   "license": "MIT",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "files": ["dist/"],
+  "files": [
+    "dist/"
+  ],
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch"
