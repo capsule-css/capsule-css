@@ -26,7 +26,12 @@ jobs:
       - name: Verify go.mod tidiness
         run: |
           go mod tidy
-          git diff --exit-code go.mod go.sum || (echo "go.mod/go.sum out of date; run 'go mod tidy'" && exit 1)
+          changes="$(git status --porcelain -- go.mod go.sum)"
+          if [ -n "$changes" ]; then
+            echo "go.mod/go.sum out of date; run 'go mod tidy'"
+            echo "$changes"
+            exit 1
+          fi
 
       - name: Run Go tests with race detector
         run: go test ./... -race -count=1
