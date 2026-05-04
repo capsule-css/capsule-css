@@ -17,10 +17,8 @@ playground/vanilla/capsule.d.ts
 site/capsule.d.ts
 
 # Go build artifacts
-capsule
-capsule.exe
-stylescript
-stylescript.exe
+/capsule
+/capsule.exe
 
 # Claude Code (machine-specific)
 .claude/settings.local.json
