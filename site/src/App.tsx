@@ -180,7 +180,7 @@ export default function App() {
         </HeroSub>
         <HeroActions>
           <Button intent="primary" href="/docs.html">Read the docs</Button>
-          <Button intent="outline" href="https://github.com/anthropics/capsule-css">View on GitHub</Button>
+          <Button intent="outline" href="https://github.com/capsule-css/capsule-css">View on GitHub</Button>
         </HeroActions>
         <HeroDemo>
           <CodeHeader>
