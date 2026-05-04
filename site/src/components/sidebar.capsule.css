@@ -1,0 +1,64 @@
+@scope (.Sidebar) {
+  @tag aside;
+  :scope {
+    width: 240px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 57px;
+    align-self: flex-start;
+    max-height: calc(100vh - 57px);
+    overflow-y: auto;
+    padding: 32px 0 48px 0;
+    border-right: 1px solid #e5e7eb;
+
+    @media (max-width: 768px) {
+      display: none;
+    }
+  }
+  @media (prefers-color-scheme: dark) {
+    :scope { border-right-color: #27272a; }
+  }
+}
+
+@scope (.SidebarGroup) {
+  @tag div;
+  :scope { margin-bottom: 24px; padding: 0 16px; }
+}
+
+@scope (.SidebarLabel) {
+  @tag div;
+  :scope {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #9ca3af;
+    margin-bottom: 6px;
+    padding-left: 8px;
+  }
+  @media (prefers-color-scheme: dark) { :scope { color: #52525b; } }
+}
+
+@scope (.SidebarLink) {
+  @tag a;
+  :scope {
+    display: block;
+    font-size: 13.5px;
+    color: #6b7280;
+    text-decoration: none;
+    padding: 4px 8px;
+    border-radius: 6px;
+    line-height: 1.4;
+    transition: color 0.1s, background 0.1s;
+    &:hover { color: #111827; background: #f3f4f6; }
+  }
+  :scope[data-active] {
+    color: #0066ff;
+    background: #eff6ff;
+    font-weight: 600;
+  }
+  @media (prefers-color-scheme: dark) {
+    :scope { color: #71717a; &:hover { color: #fafafa; background: #27272a; } }
+    :scope[data-active] { color: #60a5fa; background: #18181b; }
+  }
+}

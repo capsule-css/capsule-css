@@ -1,0 +1,56 @@
+@scope (.Section) {
+  @tag section;
+  :scope {
+    padding: 80px 24px;
+    background: #fafafa;
+  }
+  :scope[data-alt] { background: #ffffff; border-top: 1px solid #e5e7eb; border-bottom: 1px solid #e5e7eb; }
+  @media (prefers-color-scheme: dark) {
+    :scope { background: #09090b; }
+    :scope[data-alt] { background: #18181b; border-color: #27272a; }
+  }
+}
+
+@scope (.SectionInner) {
+  @tag div;
+  :scope {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+}
+
+@scope (.SectionLabel) {
+  @tag div;
+  :scope {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #0066ff;
+    margin-bottom: 12px;
+  }
+}
+
+@scope (.SectionTitle) {
+  @tag h2;
+  :scope {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: #111827;
+    margin: 0 0 16px;
+  }
+  @media (prefers-color-scheme: dark) { :scope { color: #fafafa; } }
+}
+
+@scope (.SectionDesc) {
+  @tag p;
+  :scope {
+    font-size: 16px;
+    color: #6b7280;
+    max-width: 540px;
+    margin: 0 0 48px;
+    line-height: 1.7;
+  }
+  @media (prefers-color-scheme: dark) { :scope { color: #71717a; } }
+}

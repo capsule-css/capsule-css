@@ -1,0 +1,5 @@
+{
+  "name": "capsule-css-monorepo",
+  "private": true,
+  "workspaces": ["packages/*", "playground/*"]
+}

@@ -1,0 +1,655 @@
+/* ── Layout ──────────────────────────────────────────────────────────────── */
+
+@scope (.StarterLayout) {
+  @tag div;
+  :scope {
+    display: grid;
+    grid-template-columns: 260px 220px 1fr;
+    grid-template-rows: auto 1fr;
+    min-height: calc(100vh - 57px);
+
+    @media (max-width: 1024px) {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto auto 1fr;
+    }
+    @media (max-width: 640px) {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+@scope (.StarterHeader) {
+  @tag div;
+  :scope {
+    grid-column: 1 / -1;
+    padding: 32px 40px 24px;
+    border-bottom: 1px solid #e5e7eb;
+
+    @media (max-width: 640px) {
+      padding: 24px 20px 20px;
+    }
+  }
+  @media (prefers-color-scheme: dark) {
+    :scope { border-bottom-color: #27272a; }
+  }
+}
+
+@scope (.StarterHeaderTitle) {
+  @tag h1;
+  :scope {
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: #111827;
+    margin: 0 0 4px;
+  }
+  @media (prefers-color-scheme: dark) { :scope { color: #fafafa; } }
+}
+
+@scope (.StarterHeaderSub) {
+  @tag p;
+  :scope {
+    font-size: 14px;
+    color: #6b7280;
+    margin: 0;
+    line-height: 1.5;
+  }
+  @media (prefers-color-scheme: dark) { :scope { color: #71717a; } }
+}
+
+/* ── Panels ──────────────────────────────────────────────────────────────── */
+
+@scope (.StarterPanel) {
+  @tag div;
+  :scope {
+    border-right: 1px solid #e5e7eb;
+    overflow-y: auto;
+    padding: 24px 0 40px;
+
+    @media (max-width: 640px) {
+      border-right: none;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 20px 0 24px;
+    }
+  }
+  @media (prefers-color-scheme: dark) {
+    :scope { border-right-color: #27272a; border-bottom-color: #27272a; }
+  }
+}
+
+@scope (.StarterPanelTitle) {
+  @tag div;
+  :scope {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #9ca3af;
+    padding: 0 20px 10px;
+    border-bottom: 1px solid #f3f4f6;
+    margin-bottom: 16px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :scope { color: #52525b; border-bottom-color: #27272a; }
+  }
+}
+
+/* ── Tokens panel ────────────────────────────────────────────────────────── */
+
+@scope (.TokenGroup) {
+  @tag div;
+  :scope { padding: 0 20px; margin-bottom: 20px; }
+}
+
+@scope (.TokenGroupLabel) {
+  @tag div;
+  :scope {
+    font-size: 11px;
+    font-weight: 600;
+    color: #6b7280;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  @media (prefers-color-scheme: dark) { :scope { color: #71717a; } }
+}
+
+@scope (.TokenRow) {
+  @tag label;
+  :scope {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+    cursor: pointer;
+  }
+}
+
+@scope (.TokenSwatch) {
+  @tag span;
+  :scope {
+    position: relative;
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    border: 1px solid rgba(0,0,0,0.1);
+    flex-shrink: 0;
+    display: inline-block;
+    cursor: pointer;
+    overflow: hidden;
+
+    & input[type="color"] {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+      border: none;
+      padding: 0;
+    }
+  }
+}
+
+@scope (.TokenInput) {
+  @tag input;
+  :scope {
+    flex: 1;
+    font-size: 12px;
+    font-family: "SF Mono", "Fira Code", Menlo, monospace;
+    color: #374151;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 5px;
+    padding: 3px 7px;
+    outline: none;
+    min-width: 0;
+
+    &:focus { border-color: #0066ff; background: #fff; }
+  }
+  @media (prefers-color-scheme: dark) {
+    :scope {
+      color: #d4d4d8;
+      background: #18181b;
+      border-color: #3f3f46;
+      &:focus { border-color: #3b82f6; background: #09090b; }
+    }
+  }
+}
+
+@scope (.TokenLabel) {
+  @tag span;
+  :scope {
+    font-size: 11px;
+    color: #9ca3af;
+    min-width: 60px;
+  }
+  @media (prefers-color-scheme: dark) { :scope { color: #52525b; } }
+}
+
+@scope (.PresetRow) {
+  @tag div;
+  :scope {
+    display: flex;
+    gap: 6px;
+    padding: 0 20px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+}
+
+@scope (.PresetBtn) {
+  @tag button;
+  :scope {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 6px;
+    border: 1px solid #e5e7eb;
+    background: #fff;
+    color: #374151;
+    cursor: pointer;
+    transition: all 0.1s;
+    &:hover { border-color: #0066ff; color: #0066ff; }
+  }
+  :scope[data-active] {
+    background: #0066ff;
+    border-color: #0066ff;
+    color: #fff;
+  }
+  @media (prefers-color-scheme: dark) {
+    :scope { background: #18181b; border-color: #3f3f46; color: #a1a1aa; &:hover { border-color: #3b82f6; color: #60a5fa; } }
+    :scope[data-active] { background: #1d4ed8; border-color: #1d4ed8; color: #fff; }
+  }
+}
+
+/* ── Components panel ────────────────────────────────────────────────────── */
+
+@scope (.ComponentGroup) {
+  @tag div;
+  :scope { padding: 0 20px; margin-bottom: 20px; }
+}
+
+@scope (.ComponentGroupLabel) {
+  @tag div;
+  :scope {
+    font-size: 11px;
+    font-weight: 600;
+    color: #6b7280;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  @media (prefers-color-scheme: dark) { :scope { color: #71717a; } }
+}
+
+@scope (.ComponentCheckbox) {
+  @tag label;
+  :scope {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #374151;
+    cursor: pointer;
+    padding: 4px 0;
+    user-select: none;
+    &:hover { color: #111827; }
+  }
+  @media (prefers-color-scheme: dark) {
+    :scope { color: #a1a1aa; &:hover { color: #fafafa; } }
+  }
+}
+
+@scope (.ComponentCheckboxInput) {
+  @tag input;
+  :scope {
+    width: 14px;
+    height: 14px;
+    accent-color: #0066ff;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+}
+
+@scope (.ComponentCheckboxDesc) {
+  @tag span;
+  :scope {
+    font-size: 11px;
+    color: #9ca3af;
+    display: block;
+    padding-left: 22px;
+    margin-top: -2px;
+    margin-bottom: 2px;
+    line-height: 1.4;
+  }
+  @media (prefers-color-scheme: dark) { :scope { color: #52525b; } }
+}
+
+/* ── Output panel ────────────────────────────────────────────────────────── */
+
+@scope (.StarterOutput) {
+  @tag div;
+  :scope {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
+  }
+}
+
+@scope (.StarterOutputToolbar) {
+  @tag div;
+  :scope {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+    border-bottom: 1px solid #e5e7eb;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+  @media (prefers-color-scheme: dark) {
+    :scope { border-bottom-color: #27272a; }
+  }
+}
+
+@scope (.StarterOutputTabs) {
+  @tag div;
+  :scope {
+    display: inline-flex;
+    background: #f3f4f6;
+    border-radius: 7px;
+    padding: 2px;
+    gap: 2px;
+  }
+  @media (prefers-color-scheme: dark) { :scope { background: #27272a; } }
+}
+
+@scope (.StarterOutputTab) {
+  @tag button;
+  :scope {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 5px;
+    border: none;
+    background: transparent;
+    color: #6b7280;
+    cursor: pointer;
+    transition: all 0.1s;
+    &:hover { color: #374151; }
+  }
+  :scope[data-active] {
+    background: #fff;
+    color: #111827;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+  @media (prefers-color-scheme: dark) {
+    :scope { color: #71717a; &:hover { color: #a1a1aa; } }
+    :scope[data-active] { background: #3f3f46; color: #fafafa; box-shadow: none; }
+  }
+}
+
+@scope (.StarterOutputActions) {
+  @tag div;
+  :scope { display: flex; gap: 8px; }
+}
+
+@scope (.StarterActionBtn) {
+  @tag button;
+  :scope {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 5px 14px;
+    border-radius: 6px;
+    border: 1px solid #e5e7eb;
+    background: #fff;
+    color: #374151;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.1s;
+    &:hover { border-color: #d1d5db; background: #f9fafb; }
+  }
+  :scope[data-intent="primary"] {
+    background: #0066ff;
+    border-color: #0066ff;
+    color: #fff;
+    &:hover { background: #0052cc; border-color: #0052cc; }
+  }
+  :scope[data-copied] {
+    background: #10b981;
+    border-color: #10b981;
+    color: #fff;
+  }
+  @media (prefers-color-scheme: dark) {
+    :scope { background: #18181b; border-color: #3f3f46; color: #a1a1aa; &:hover { background: #27272a; } }
+    :scope[data-intent="primary"] { background: #1d4ed8; border-color: #1d4ed8; color: #fff; }
+  }
+}
+
+@scope (.StarterCode) {
+  @tag pre;
+  :scope {
+    flex: 1;
+    margin: 0;
+    padding: 24px;
+    overflow: auto;
+    font-size: 12.5px;
+    line-height: 1.65;
+    font-family: "SF Mono", "Fira Code", "Cascadia Code", Menlo, monospace;
+    color: #e2e8f0;
+    background: #0f172a;
+    tab-size: 2;
+    white-space: pre;
+    min-height: 400px;
+
+    @media (max-width: 640px) {
+      font-size: 11.5px;
+      padding: 16px;
+      min-height: 300px;
+    }
+  }
+}
+
+@scope (.StarterPreview) {
+  @tag div;
+  :scope {
+    flex: 1;
+    padding: 32px 40px;
+    overflow-y: auto;
+    background: #fafafa;
+    min-height: 400px;
+
+    @media (max-width: 640px) {
+      padding: 20px;
+    }
+  }
+  @media (prefers-color-scheme: dark) { :scope { background: #09090b; } }
+}
+
+@scope (.PreviewSection) {
+  @tag div;
+  :scope { margin-bottom: 32px; }
+}
+
+@scope (.PreviewSectionLabel) {
+  @tag div;
+  :scope {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #9ca3af;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  @media (prefers-color-scheme: dark) {
+    :scope { color: #52525b; border-bottom-color: #27272a; }
+  }
+}
+
+@scope (.PreviewRow) {
+  @tag div;
+  :scope {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+}
+
+@scope (.StarterLinesCount) {
+  @tag span;
+  :scope {
+    font-size: 11px;
+    color: #6b7280;
+  }
+  @media (prefers-color-scheme: dark) { :scope { color: #52525b; } }
+}
+
+/* ── Dark/light toggle ───────────────────────────────────────────────────── */
+
+@scope (.ThemeToggle) {
+  @tag button;
+  :scope {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 6px;
+    border: 1px solid #e5e7eb;
+    background: #fff;
+    color: #374151;
+    cursor: pointer;
+    transition: all 0.1s;
+    &:hover { border-color: #d1d5db; background: #f9fafb; }
+  }
+  :scope[data-mode="dark"] {
+    background: #18181b;
+    border-color: #3f3f46;
+    color: #a1a1aa;
+    &:hover { background: #27272a; }
+  }
+  @media (prefers-color-scheme: dark) {
+    :scope { background: #18181b; border-color: #3f3f46; color: #a1a1aa; &:hover { background: #27272a; } }
+    :scope[data-mode="dark"] { background: #27272a; border-color: #52525b; color: #fafafa; }
+  }
+}
+
+/* ── Component props accordion ───────────────────────────────────────────── */
+
+@scope (.PropsAccordion) {
+  @tag div;
+  :scope {
+    margin: 2px 0 6px;
+    padding-left: 22px;
+  }
+}
+
+@scope (.PropsToggle) {
+  @tag button;
+  :scope {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #9ca3af;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 2px 0;
+    transition: color 0.1s;
+    &:hover { color: #6b7280; }
+  }
+  :scope[data-open] { color: #0066ff; &:hover { color: #0052cc; } }
+  @media (prefers-color-scheme: dark) {
+    :scope { color: #52525b; &:hover { color: #71717a; } }
+    :scope[data-open] { color: #60a5fa; &:hover { color: #93c5fd; } }
+  }
+}
+
+@scope (.PropsChevron) {
+  @tag span;
+  :scope {
+    font-size: 9px;
+    transition: transform 0.15s;
+    display: inline-block;
+  }
+  :scope[data-open] { transform: rotate(90deg); }
+}
+
+@scope (.PropsPanel) {
+  @tag div;
+  :scope {
+    display: none;
+    padding: 8px 0 4px;
+    border-left: 2px solid #f3f4f6;
+    padding-left: 10px;
+    margin-top: 4px;
+  }
+  :scope[data-open] { display: block; }
+  @media (prefers-color-scheme: dark) {
+    :scope { border-left-color: #27272a; }
+  }
+}
+
+@scope (.PropRow) {
+  @tag div;
+  :scope {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 6px;
+  }
+}
+
+@scope (.PropLabel) {
+  @tag span;
+  :scope {
+    font-size: 11px;
+    color: #6b7280;
+    min-width: 72px;
+    flex-shrink: 0;
+  }
+  @media (prefers-color-scheme: dark) { :scope { color: #71717a; } }
+}
+
+@scope (.PropInput) {
+  @tag input;
+  :scope {
+    width: 68px;
+    font-size: 11px;
+    font-family: "SF Mono", "Fira Code", Menlo, monospace;
+    color: #374151;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+    padding: 2px 6px;
+    outline: none;
+    &:focus { border-color: #0066ff; background: #fff; }
+  }
+  @media (prefers-color-scheme: dark) {
+    :scope {
+      color: #d4d4d8;
+      background: #18181b;
+      border-color: #3f3f46;
+      &:focus { border-color: #3b82f6; background: #09090b; }
+    }
+  }
+}
+
+@scope (.PropPills) {
+  @tag div;
+  :scope {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+  }
+}
+
+@scope (.PropPill) {
+  @tag button;
+  :scope {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 4px;
+    border: 1px solid #e5e7eb;
+    background: #fff;
+    color: #6b7280;
+    cursor: pointer;
+    transition: all 0.1s;
+    &:hover { border-color: #0066ff; color: #0066ff; }
+  }
+  :scope[data-active] {
+    background: #eff6ff;
+    border-color: #0066ff;
+    color: #0066ff;
+  }
+  @media (prefers-color-scheme: dark) {
+    :scope { background: #18181b; border-color: #3f3f46; color: #71717a; &:hover { border-color: #3b82f6; color: #60a5fa; } }
+    :scope[data-active] { background: #18181b; border-color: #3b82f6; color: #60a5fa; }
+  }
+}
+
+@scope (.PropSectionLabel) {
+  @tag div;
+  :scope {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #d1d5db;
+    margin: 8px 0 4px;
+  }
+  :scope[data-first] { margin-top: 0; }
+  @media (prefers-color-scheme: dark) { :scope { color: #3f3f46; } }
+}

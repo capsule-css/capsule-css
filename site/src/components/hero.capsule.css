@@ -1,0 +1,72 @@
+@scope (.HeroWrap) {
+  @tag section;
+  :scope {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 96px 24px 80px;
+    text-align: center;
+  }
+}
+
+@scope (.HeroEyebrow) {
+  @tag div;
+  :scope {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #0066ff;
+    margin-bottom: 20px;
+  }
+}
+
+@scope (.HeroTitle) {
+  @tag h1;
+  :scope {
+    font-size: clamp(2.75rem, 7vw, 5rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.04em;
+    color: #111827;
+    margin: 0 0 20px;
+  }
+  @media (prefers-color-scheme: dark) { :scope { color: #fafafa; } }
+}
+
+@scope (.HeroSub) {
+  @tag p;
+  :scope {
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    color: #6b7280;
+    max-width: 500px;
+    margin: 0 auto 36px;
+    line-height: 1.7;
+  }
+  @media (prefers-color-scheme: dark) { :scope { color: #71717a; } }
+}
+
+@scope (.HeroActions) {
+  @tag div;
+  :scope {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 72px;
+  }
+}
+
+@scope (.HeroDemo) {
+  @tag div;
+  :scope {
+    max-width: 740px;
+    margin: 0 auto;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #27272a;
+    background: #09090b;
+    text-align: left;
+    box-shadow: 0 32px 64px rgba(0, 0, 0, 0.15);
+  }
+}

@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+
+# TypeScript build output (packages rebuilt before publish)
+packages/core/dist/
+packages/vite/dist/
+*.tsbuildinfo
+
+# Playground and site build output
+playground/*/dist/
+site/dist/
+
+# Generated type declarations (produced by the Vite plugin at dev/build time)
+capsule.d.ts
+playground/react/capsule.d.ts
+playground/vanilla/capsule.d.ts
+site/capsule.d.ts
+
+# Go build artifacts
+capsule
+capsule.exe
+stylescript
+stylescript.exe
+
+# Claude Code (machine-specific)
+.claude/settings.local.json
+.claude/settings.json
+
+# OS
+.DS_Store

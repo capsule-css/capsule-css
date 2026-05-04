@@ -1,0 +1,26 @@
+{
+  "name": "@capsule-css/core",
+  "version": "0.1.0",
+  "description": "capsule-css core — invokes the platform binary to compile .capsule.css files",
+  "repository": "github:capsule-css/capsule-css",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": ["dist/"],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "optionalDependencies": {
+    "@capsule-css/cli-darwin-arm64": "workspace:*",
+    "@capsule-css/cli-darwin-x64": "workspace:*",
+    "@capsule-css/cli-linux-x64": "workspace:*",
+    "@capsule-css/cli-linux-arm64": "workspace:*",
+    "@capsule-css/cli-win32-x64": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  }
+}

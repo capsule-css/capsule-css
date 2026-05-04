@@ -1,0 +1,91 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  build-binaries:
+    name: Build ${{ matrix.target.pkg }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target:
+          - { pkg: cli-darwin-arm64, goos: darwin,  goarch: arm64, ext: ""    }
+          - { pkg: cli-darwin-x64,   goos: darwin,  goarch: amd64, ext: ""    }
+          - { pkg: cli-linux-x64,    goos: linux,   goarch: amd64, ext: ""    }
+          - { pkg: cli-linux-arm64,  goos: linux,   goarch: arm64, ext: ""    }
+          - { pkg: cli-win32-x64,    goos: windows, goarch: amd64, ext: ".exe" }
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.22"
+
+      - name: Cross-compile binary
+        env:
+          GOOS: ${{ matrix.target.goos }}
+          GOARCH: ${{ matrix.target.goarch }}
+          CGO_ENABLED: "0"
+        run: |
+          mkdir -p packages/${{ matrix.target.pkg }}/bin
+          go build -trimpath -ldflags="-s -w" \
+            -o packages/${{ matrix.target.pkg }}/bin/capsule${{ matrix.target.ext }} \
+            ./cmd/capsule
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.target.pkg }}
+          path: packages/${{ matrix.target.pkg }}/bin/
+
+  publish:
+    name: Publish to npm
+    needs: build-binaries
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          registry-url: "https://registry.npmjs.org"
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Download all binaries
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Place binaries into sub-packages
+        run: |
+          for pkg in cli-darwin-arm64 cli-darwin-x64 cli-linux-x64 cli-linux-arm64 cli-win32-x64; do
+            mkdir -p packages/$pkg/bin
+            cp -r artifacts/$pkg/* packages/$pkg/bin/
+            chmod +x packages/$pkg/bin/* || true
+          done
+
+      - name: Build TS packages
+        run: |
+          pnpm --filter @capsule-css/core build
+          pnpm --filter @capsule-css/vite build
+
+      - name: Publish all packages
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: "true"
+        run: |
+          for pkg in cli-darwin-arm64 cli-darwin-x64 cli-linux-x64 cli-linux-arm64 cli-win32-x64 core vite; do
+            pnpm --filter @capsule-css/$pkg publish --access public --no-git-checks
+          done

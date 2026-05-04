@@ -1,0 +1,83 @@
+@scope (.FrameworkGrid) {
+  @tag div;
+  :scope {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 40px;
+  }
+}
+
+@scope (.FrameworkItem) {
+  @tag div;
+  :scope {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    border-radius: 10px;
+    border: 1px solid #e5e7eb;
+    background: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+    color: #374151;
+  }
+  :scope[data-status="available"] {
+    border-color: #bfdbfe;
+    background: #eff6ff;
+    color: #1d4ed8;
+  }
+  :scope[data-status="soon"] {
+    background: #ffffff;
+    border-color: #e5e7eb;
+    color: #9ca3af;
+  }
+  @media (prefers-color-scheme: dark) {
+    :scope {
+      background: #18181b;
+      border-color: #27272a;
+      color: #71717a;
+    }
+    :scope[data-status="available"] {
+      background: #18181b;
+      border-color: #3f3f46;
+      color: #a1a1aa;
+    }
+    :scope[data-status="soon"] {
+      background: #18181b;
+      border-color: #27272a;
+      color: #52525b;
+    }
+  }
+}
+
+@scope (.FrameworkStatus) {
+  @tag span;
+  :scope {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: #f3f4f6;
+    color: #9ca3af;
+    margin-left: auto;
+  }
+  :scope[data-type="available"] {
+    background: #dcfce7;
+    color: #15803d;
+  }
+  @media (prefers-color-scheme: dark) {
+    :scope { background: #09090b; color: #52525b; }
+    :scope[data-type="available"] { background: #14532d; color: #4ade80; }
+  }
+}
+
+@scope (.FrameworkIcon) {
+  @tag span;
+  :scope {
+    font-size: 20px;
+    line-height: 1;
+  }
+}

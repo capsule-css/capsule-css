@@ -1,0 +1,10 @@
+{
+  "name": "@capsule-css/cli-linux-x64",
+  "version": "0.1.0",
+  "description": "capsule-css CLI binary for Linux (x64)",
+  "repository": "github:capsule-css/capsule-css",
+  "license": "MIT",
+  "os": ["linux"],
+  "cpu": ["x64"],
+  "files": ["bin/"]
+}

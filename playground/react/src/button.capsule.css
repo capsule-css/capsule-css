@@ -1,0 +1,71 @@
+@scope (.Button) {
+  @tag button;
+
+  :scope {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+
+    &:hover {
+      opacity: 0.85;
+    }
+    &:focus-visible {
+      outline: 2px solid #0066ff;
+      outline-offset: 2px;
+    }
+    &:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+  }
+
+  :scope[data-intent="primary"] {
+    background: #0066ff;
+    color: white;
+  }
+  :scope[data-intent="secondary"] {
+    background: transparent;
+    border: 1px solid #0066ff;
+    color: #0066ff;
+  }
+  :scope[data-intent="danger"] {
+    background: #e53e3e;
+    color: white;
+  }
+
+  :scope[data-size="sm"] {
+    padding: 4px 8px;
+    font-size: 12px;
+  }
+  :scope[data-size="md"] {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+  :scope[data-size="lg"] {
+    padding: 12px 24px;
+    font-size: 16px;
+  }
+}
+
+@scope (.Label) {
+  @tag label;
+
+  :scope {
+    display: flex;
+    height: 50px;
+    background: green;
+  }
+
+  :scope[data-primary] {
+    background: blue;
+  }
+  
+  :scope[data-primary="hello"] {
+    background: yellow;
+  }
+}
