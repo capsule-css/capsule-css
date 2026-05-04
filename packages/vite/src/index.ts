@@ -1,5 +1,5 @@
 import { readFileSync, writeFileSync } from "node:fs";
-import { basename, resolve, dirname } from "node:path";
+import { basename, resolve, dirname, relative, isAbsolute } from "node:path";
 import type { Plugin, ResolvedConfig } from "vite";
 import { preprocessCSS } from "vite";
 import { compile, compileTypes, type CompileOptions } from "@capsule-css/core";
@@ -24,8 +24,81 @@ function fromVirtualId(id: string): string | null {
   return id.slice(PREFIX.length, -SUFFIX.length);
 }
 
-function stripTagDirectives(css: string): string {
-  return css.replace(/[ \t]*@tag\s+[a-z][a-z0-9-]*\s*;\n?/g, "");
+// Resolve the path requested by the dev middleware against the project
+// root, returning the absolute filesystem path on success or null when the
+// request escapes the root.
+//
+// The dev server forwards every URL ending in `.capsule.css` to readFileSync.
+// A naive `req.url.replace(/^\//, "")` would let a payload such as
+// `/../../etc/passwd.capsule.css` read arbitrary files relative to the
+// process CWD. We resolve against `root` and reject any result whose
+// relative path starts with `..` or is absolute.
+export function safeResolveCapsulePath(root: string, url: string): string | null {
+  if (!url) return null;
+  const clean = url.split("?")[0].split("#")[0];
+  if (!clean.endsWith(".capsule.css")) return null;
+
+  const absRoot = resolve(root);
+  const requested = resolve(absRoot, "." + clean);
+  const rel = relative(absRoot, requested);
+  if (rel === "" || rel.startsWith("..") || isAbsolute(rel)) return null;
+  return requested;
+}
+
+// Strip the `@tag <name>;` directive from a CSS string.
+//
+// A naive global regex would also match `@tag` text appearing inside a CSS
+// string literal (e.g. `content: "@tag foo;"`) or inside a `/* ... */`
+// comment. Both are valid CSS that the browser will keep verbatim, so we
+// must skip them. We scan the input character by character, transparently
+// passing strings and comments through.
+export function stripTagDirectives(css: string): string {
+  const TAG_RE = /^@tag\s+[a-z][a-z0-9-]*\s*;[ \t]*\n?/;
+  let out = "";
+  let i = 0;
+
+  while (i < css.length) {
+    const ch = css[i];
+
+    if (ch === "/" && css[i + 1] === "*") {
+      const end = css.indexOf("*/", i + 2);
+      const stop = end < 0 ? css.length : end + 2;
+      out += css.slice(i, stop);
+      i = stop;
+      continue;
+    }
+
+    if (ch === '"' || ch === "'") {
+      const quote = ch;
+      let j = i + 1;
+      while (j < css.length) {
+        if (css[j] === "\\") { j += 2; continue; }
+        if (css[j] === quote) { j++; break; }
+        j++;
+      }
+      out += css.slice(i, j);
+      i = j;
+      continue;
+    }
+
+    if (ch === "@") {
+      const m = css.slice(i).match(TAG_RE);
+      if (m) {
+        // Drop indentation that immediately precedes the directive on the
+        // same line, so we don't leave a trailing whitespace-only line.
+        let k = out.length;
+        while (k > 0 && (out[k - 1] === " " || out[k - 1] === "\t")) k--;
+        out = out.slice(0, k);
+        i += m[0].length;
+        continue;
+      }
+    }
+
+    out += ch;
+    i++;
+  }
+
+  return out;
 }
 
 export function capsule(options: CapsuleOptions = {}): Plugin {
@@ -154,10 +227,12 @@ export function capsule(options: CapsuleOptions = {}): Plugin {
 
     configureServer(server) {
       server.middlewares.use((req, res, next) => {
-        if (!req.url?.endsWith(".capsule.css")) return next();
-        const path = req.url.replace(/^\//, "");
+        if (!req.url) return next();
+        const requested = safeResolveCapsulePath(config.root, req.url);
+        if (!requested) return next();
+
         try {
-          const css = readFileSync(path, "utf8");
+          const css = readFileSync(requested, "utf8");
           res.setHeader("Content-Type", "text/css");
           res.end(css);
         } catch {

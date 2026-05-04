@@ -7,7 +7,7 @@ import (
 )
 
 var (
-	tagRe = regexp.MustCompile(`@tag\s+([a-z][a-z0-9-]*)\s*;`)
+	tagRe = regexp.MustCompile(`^@tag\s+([a-z][a-z0-9-]*)\s*;`)
 )
 
 type FileDef struct {
@@ -91,6 +91,7 @@ func parseScopeBlock(s *scanner) (*ComponentDef, error) {
 		return nil, err
 	}
 
+	bodyLine, bodyCol := s.line, s.col
 	body, err := s.readBlock()
 	if err != nil {
 		return nil, err
@@ -100,7 +101,11 @@ func parseScopeBlock(s *scanner) (*ComponentDef, error) {
 		Name: name,
 		Tag:  "div",
 	}
-	if tag := extractTag(body); tag != "" {
+	tag, err := extractTag(body, bodyLine, bodyCol)
+	if err != nil {
+		return nil, err
+	}
+	if tag != "" {
 		comp.Tag = tag
 	}
 	comp.Variants = extractVariants(body)
@@ -108,12 +113,114 @@ func parseScopeBlock(s *scanner) (*ComponentDef, error) {
 	return comp, nil
 }
 
-func extractTag(body string) string {
-	m := tagRe.FindStringSubmatch(body)
-	if m != nil {
-		return m[1]
+// extractTag walks the body of a @scope block at brace depth 0 and returns
+// the value of the @tag directive, or an error if the directive is misused.
+//
+// Rules enforced:
+//   - At most one @tag per @scope block (duplicates are an error).
+//   - @tag must precede every :scope rule at the same depth (the spec
+//     requires it and we reject violations).
+//   - @tag occurrences inside CSS strings, /* comments */, or nested rules
+//     are ignored — they are not directives.
+//
+// :scope/@tag references inside string literals or comments are likewise
+// ignored, so `content: "@tag x;"` does not affect parsing.
+func extractTag(body string, baseLine, baseCol int) (string, error) {
+	depth := 0
+	tag := ""
+	tagSeen := false
+	scopeSeen := false
+
+	i := 0
+	for i < len(body) {
+		ch := body[i]
+
+		if ch == '/' && i+1 < len(body) && body[i+1] == '*' {
+			end := strings.Index(body[i+2:], "*/")
+			if end < 0 {
+				return "", nil
+			}
+			i += 2 + end + 2
+			continue
+		}
+
+		if ch == '"' || ch == '\'' {
+			quote := ch
+			i++
+			for i < len(body) {
+				c := body[i]
+				if c == '\\' && i+1 < len(body) {
+					i += 2
+					continue
+				}
+				i++
+				if c == quote {
+					break
+				}
+			}
+			continue
+		}
+
+		if ch == '{' {
+			depth++
+			i++
+			continue
+		}
+		if ch == '}' {
+			if depth > 0 {
+				depth--
+			}
+			i++
+			continue
+		}
+
+		if depth == 0 {
+			if ch == '@' && strings.HasPrefix(body[i:], "@tag") {
+				m := tagRe.FindStringSubmatch(body[i:])
+				if m != nil {
+					if tagSeen {
+						line, col := offsetLineCol(body, i, baseLine, baseCol)
+						return "", &ParseError{line, col, "duplicate @tag directive"}
+					}
+					if scopeSeen {
+						line, col := offsetLineCol(body, i, baseLine, baseCol)
+						return "", &ParseError{line, col, "@tag must appear before :scope rules"}
+					}
+					tag = m[1]
+					tagSeen = true
+					i += len(m[0])
+					continue
+				}
+			}
+			if ch == ':' && strings.HasPrefix(body[i:], ":scope") {
+				scopeSeen = true
+				i += len(":scope")
+				continue
+			}
+		}
+
+		i++
 	}
-	return ""
+
+	return tag, nil
+}
+
+// offsetLineCol converts a byte offset inside a body string to (line, col)
+// coordinates in the original source, using the line/col of the body start.
+func offsetLineCol(body string, off, baseLine, baseCol int) (int, int) {
+	line, col := baseLine, baseCol
+	if off > len(body) {
+		off = len(body)
+	}
+	for i := 0; i < off; i++ {
+		if body[i] == '\n' {
+			line++
+			col = 1
+		} else {
+			col++
+		}
+	}
+	return line, col
 }
 
 // rawAttr is a single [data-X] or [data-X="Y"] occurrence found while walking.

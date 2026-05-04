@@ -1,6 +1,7 @@
 package parser
 
 import (
+	"strings"
 	"testing"
 )
 
@@ -378,6 +379,86 @@ func TestParseSubstringMatchersIgnored(t *testing.T) {
 		t.Fatalf("want 1 variant (substring matcher skipped), got %d: %+v", len(c.Variants), c.Variants)
 	}
 	assertVariant(t, c.Variants[0], "tone", true)
+}
+
+// @tag position and uniqueness
+
+func TestParseErrorDuplicateTag(t *testing.T) {
+	src := `
+@scope (.Button) {
+  @tag a;
+  @tag button;
+  :scope { padding: 8px; }
+}`
+	_, err := Parse([]byte(src))
+	if err == nil {
+		t.Fatal("want error for duplicate @tag, got nil")
+	}
+	if !strings.Contains(err.Error(), "duplicate @tag") {
+		t.Errorf("want %q in error, got %q", "duplicate @tag", err.Error())
+	}
+}
+
+func TestParseErrorTagAfterScope(t *testing.T) {
+	src := `
+@scope (.Button) {
+  :scope { padding: 8px; }
+  @tag button;
+}`
+	_, err := Parse([]byte(src))
+	if err == nil {
+		t.Fatal("want error for @tag after :scope, got nil")
+	}
+	if !strings.Contains(err.Error(), "before :scope") {
+		t.Errorf("want position error, got %q", err.Error())
+	}
+}
+
+func TestParseTagInsideCommentIgnored(t *testing.T) {
+	// @tag mentioned inside a /* ... */ comment must not be treated as a directive.
+	src := `
+@scope (.Button) {
+  /* @tag a; */
+  @tag button;
+  :scope { padding: 8px; }
+}`
+	file, err := Parse([]byte(src))
+	assertNoErr(t, err)
+	if file.Components[0].Tag != "button" {
+		t.Errorf("want Tag=button, got %q", file.Components[0].Tag)
+	}
+}
+
+func TestParseTagInsideStringIgnored(t *testing.T) {
+	// @tag inside a CSS string literal must not be treated as a directive.
+	src := `
+@scope (.Card) {
+  @tag section;
+  :scope { content: "@tag a;"; padding: 8px; }
+}`
+	file, err := Parse([]byte(src))
+	assertNoErr(t, err)
+	if file.Components[0].Tag != "section" {
+		t.Errorf("want Tag=section, got %q", file.Components[0].Tag)
+	}
+}
+
+func TestParseTagInsideNestedRuleIgnored(t *testing.T) {
+	// @tag inside a nested rule (depth > 0) is not a directive — it's bad CSS
+	// the browser will skip. The :scope-block tag stays as the source of truth.
+	src := `
+@scope (.Card) {
+  @tag section;
+  :scope {
+    @tag a;
+    padding: 8px;
+  }
+}`
+	file, err := Parse([]byte(src))
+	assertNoErr(t, err)
+	if file.Components[0].Tag != "section" {
+		t.Errorf("want Tag=section, got %q", file.Components[0].Tag)
+	}
 }
 
 func TestParseChainedAttrOnlyDeclaredInChain(t *testing.T) {
