@@ -4,6 +4,7 @@
   "description": "capsule-css core — invokes the platform binary to compile .capsule.css files",
   "repository": "github:capsule-css/capsule-css",
   "license": "MIT",
+  "publishConfig": { "access": "public" },
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

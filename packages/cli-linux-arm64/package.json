@@ -4,6 +4,7 @@
   "description": "capsule-css CLI binary for Linux (ARM64)",
   "repository": "github:capsule-css/capsule-css",
   "license": "MIT",
+  "publishConfig": { "access": "public" },
   "os": [
     "linux"
   ],
