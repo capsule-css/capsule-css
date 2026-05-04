@@ -160,27 +160,27 @@ export default function App() {
       </Nav>
 
       <HeroWrap>
-        <HeroEyebrow>Plain CSS → Typed Components</HeroEyebrow>
+        <HeroEyebrow>Typed components from native CSS @scope</HeroEyebrow>
         <HeroTitle>
-          Your CSS file{" "}
-          <span style={{ color: "#0066ff" }}>is</span> your component
+          Write CSS.{" "}
+          <span style={{ color: "#0066ff" }}>Import</span> the component.
         </HeroTitle>
         <HeroSub>
-          Write standard{" "}
+          Standard{" "}
           <a
-            href="https://www.w3schools.com/cssref/atrule_scope.php"
+            href="https://developer.mozilla.org/en-US/docs/Web/CSS/@scope"
             target="_blank"
             rel="noopener noreferrer"
             style={{ color: "#0066ff", textDecoration: "underline", textUnderlineOffset: "3px" }}
           >
             <code style={{ color: "inherit" }}>@scope</code>
           </a>{" "}
-          CSS. No new syntax, no config. capsule-css generates typed components
-          for any framework or plain DOM — straight from your stylesheet.
+          CSS in, typed React or vanilla JS components out. No DSL,
+          no runtime, no class-name hashing — just the CSS you already write.
         </HeroSub>
         <HeroActions>
-          <Button intent="primary" href="/docs.html">Read the docs</Button>
-          <Button intent="outline" href="https://github.com/capsule-css/capsule-css">View on GitHub</Button>
+          <Button intent="primary" href="/starter.html">Try the starter</Button>
+          <Button intent="outline" href="https://github.com/capsule-css/capsule-css" target="_blank" rel="noopener noreferrer">Star on GitHub</Button>
         </HeroActions>
         <HeroDemo>
           <CodeHeader>
@@ -335,6 +335,19 @@ export default function App() {
         <p>
           Built with 💊 capsule-css ·{" "}
           <FooterCode>{"import { Footer } from './layout.capsule.css'"}</FooterCode>
+        </p>
+        <p style={{ marginTop: "12px", fontSize: "13px", opacity: 0.7 }}>
+          Builds on the idea of{" "}
+          <a
+            href="https://github.com/nyancss/nyancss"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: "inherit", textDecoration: "underline", textUnderlineOffset: "3px" }}
+          >
+            nyancss
+          </a>{" "}
+          (2018) — generating components from CSS — extended for the era of
+          native <code>@scope</code> and TypeScript-first frontends.
         </p>
       </Footer>
     </>
