@@ -1,6 +1,6 @@
 {
   "name": "@capsule-css/cli-darwin-arm64",
-  "version": "0.1.0",
+  "version": "0.1.0-alpha.0",
   "description": "capsule-css CLI binary for macOS (Apple Silicon)",
   "repository": "github:capsule-css/capsule-css",
   "license": "MIT",

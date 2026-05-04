@@ -2,12 +2,17 @@ name: Release
 
 on:
   push:
-    tags: ["v*"]
+    branches: [main]
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
+  pull-requests: write
   id-token: write
+
+concurrency:
+  group: release
+  cancel-in-progress: true
 
 jobs:
   build-binaries:
@@ -16,17 +21,18 @@ jobs:
     strategy:
       matrix:
         target:
-          - { pkg: cli-darwin-arm64, goos: darwin,  goarch: arm64, ext: ""    }
-          - { pkg: cli-darwin-x64,   goos: darwin,  goarch: amd64, ext: ""    }
-          - { pkg: cli-linux-x64,    goos: linux,   goarch: amd64, ext: ""    }
-          - { pkg: cli-linux-arm64,  goos: linux,   goarch: arm64, ext: ""    }
+          - { pkg: cli-darwin-arm64, goos: darwin,  goarch: arm64, ext: ""     }
+          - { pkg: cli-darwin-x64,   goos: darwin,  goarch: amd64, ext: ""     }
+          - { pkg: cli-linux-x64,    goos: linux,   goarch: amd64, ext: ""     }
+          - { pkg: cli-linux-arm64,  goos: linux,   goarch: arm64, ext: ""     }
           - { pkg: cli-win32-x64,    goos: windows, goarch: amd64, ext: ".exe" }
     steps:
       - uses: actions/checkout@v4
 
       - uses: actions/setup-go@v5
         with:
-          go-version: "1.22"
+          go-version-file: go.mod
+          cache: false
 
       - name: Cross-compile binary
         env:
@@ -44,21 +50,24 @@ jobs:
           name: ${{ matrix.target.pkg }}
           path: packages/${{ matrix.target.pkg }}/bin/
 
-  publish:
-    name: Publish to npm
+  release:
+    name: Release or open PR
     needs: build-binaries
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
 
       - uses: pnpm/action-setup@v4
         with:
-          version: 9
+          version: latest
 
       - uses: actions/setup-node@v4
         with:
-          node-version: "20"
-          registry-url: "https://registry.npmjs.org"
+          node-version: 20
+          registry-url: https://registry.npmjs.org
           cache: pnpm
 
       - run: pnpm install --frozen-lockfile
@@ -81,11 +90,15 @@ jobs:
           pnpm --filter @capsule-css/core build
           pnpm --filter @capsule-css/vite build
 
-      - name: Publish all packages
+      - name: Create release PR or publish
+        uses: changesets/action@v1
+        with:
+          publish: pnpm changeset publish --tag alpha
+          title: "chore: release alpha"
+          commit: "chore: release alpha"
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          CHANGELOG_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_CONFIG_PROVENANCE: "true"
-        run: |
-          for pkg in cli-darwin-arm64 cli-darwin-x64 cli-linux-x64 cli-linux-arm64 cli-win32-x64 core vite; do
-            pnpm --filter @capsule-css/$pkg publish --access public --no-git-checks
-          done

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://unpkg.com/@changesets/config@3.1.4/schema.json",
+  "changelog": "@changesets/changelog-github",
+  "commit": false,
+  "fixed": [
+    [
+      "@capsule-css/core",
+      "@capsule-css/vite",
+      "@capsule-css/cli-darwin-arm64",
+      "@capsule-css/cli-darwin-x64",
+      "@capsule-css/cli-linux-x64",
+      "@capsule-css/cli-linux-arm64",
+      "@capsule-css/cli-win32-x64"
+    ]
+  ],
+  "linked": [],
+  "access": "public",
+  "baseBranch": "main",
+  "updateInternalDependencies": "patch",
+  "ignore": [],
+  "___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH": {
+    "useCalculatedVersionForSnapshots": true
+  }
+}
