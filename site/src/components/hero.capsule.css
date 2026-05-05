@@ -39,7 +39,7 @@
   :scope {
     font-size: clamp(1rem, 2vw, 1.2rem);
     color: #6b7280;
-    max-width: 500px;
+    max-width: 520px;
     margin: 0 auto 36px;
     line-height: 1.7;
   }
@@ -57,16 +57,184 @@
   }
 }
 
+/* ── Hero demo: CSS → React + Vanilla triptych ─────────────────────── */
+
 @scope (.HeroDemo) {
   @tag div;
   :scope {
-    max-width: 740px;
+    max-width: 900px;
     margin: 0 auto;
+    text-align: left;
+    display: grid;
+    /* minmax(0, …) prevents long unbreakable code lines from blowing
+       the grid column wider than the viewport. */
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+}
+
+@scope (.HeroDemoCard) {
+  @tag div;
+  :scope {
+    position: relative;
+    min-width: 0;
     border-radius: 12px;
     overflow: hidden;
     border: 1px solid #27272a;
     background: #09090b;
-    text-align: left;
     box-shadow: 0 32px 64px rgba(0, 0, 0, 0.15);
+    font-size: 12.5px;
+  }
+  /* When inside the outputs grid we don't clip overflow so the
+     IntelliSense popup can spill outside the card boundary. */
+  :scope[data-overflow] {
+    overflow: visible;
+  }
+
+  /* Tighten code chrome on phones so the snippet fits without
+     each card growing its own horizontal scrollbar. */
+  @media (max-width: 480px) {
+    :scope .CodePre {
+      padding: 14px 16px;
+      font-size: 11.5px;
+    }
+    :scope .CodeHeader {
+      padding: 10px 14px;
+    }
+  }
+}
+
+@scope (.HeroDemoStep) {
+  @tag div;
+  :scope {
+    text-align: center;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #6b7280;
+    padding: 4px 0;
+  }
+  @media (prefers-color-scheme: dark) { :scope { color: #71717a; } }
+}
+
+@scope (.HeroDemoOutputs) {
+  @tag div;
+  :scope {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 16px;
+    align-items: start;
+    @media (max-width: 760px) { grid-template-columns: minmax(0, 1fr); }
+  }
+}
+
+/* ── IntelliSense mock popup ───────────────────────────────────────── */
+
+@scope (.HeroIntellisense) {
+  @tag div;
+  :scope {
+    /* Anchored to the `intent: "primary",` line of the vanilla snippet
+       (line 4, 2-space indent). Coordinates calibrated to:
+         header ≈ 36px + pre-padding 24px + 4 × 20.6px line-height ≈ 143px
+       Vertical sits flush under line 4. Horizontal places the suggestion
+       text roughly under the literal `"primary"` so the popup reads as
+       autocomplete for the value being typed. */
+    position: absolute;
+    top: 146px;
+    left: 76px;
+    width: 260px;
+    z-index: 5;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid #3f3f46;
+    background: #18181b;
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.45), 0 2px 6px rgba(0, 0, 0, 0.35);
+    font-family: "SF Mono", "Fira Code", "Cascadia Code", Menlo, monospace;
+    font-size: 11.5px;
+    line-height: 1.45;
+
+    /* The popup only reads as "autocomplete" while it floats over the
+       React snippet. On mobile that anchor is gone, so hide it — the
+       three-card story (CSS → React + Vanilla) carries the message. */
+    @media (max-width: 760px) {
+      display: none;
+    }
+  }
+}
+
+@scope (.HeroIntellisenseList) {
+  @tag div;
+  :scope {
+    padding: 4px 0;
+  }
+}
+
+@scope (.HeroIntellisenseItem) {
+  @tag div;
+  :scope {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 3px 10px;
+    color: #d4d4d8;
+  }
+  :scope[data-active] {
+    background: #1d4ed8;
+    color: #ffffff;
+  }
+}
+
+@scope (.HeroIntellisenseIcon) {
+  @tag span;
+  :scope {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    background: #2563eb;
+    color: #ffffff;
+    font-size: 9px;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+}
+
+@scope (.HeroIntellisenseKey) {
+  @tag span;
+  :scope {
+    color: #fde68a;
+    flex: 1;
+  }
+  :scope[data-active] {
+    color: #ffffff;
+  }
+}
+
+@scope (.HeroIntellisenseHint) {
+  @tag span;
+  :scope {
+    color: #71717a;
+    font-size: 10.5px;
+  }
+  :scope[data-active] {
+    color: #c7d2fe;
+  }
+}
+
+@scope (.HeroIntellisenseDoc) {
+  @tag div;
+  :scope {
+    border-top: 1px solid #3f3f46;
+    padding: 6px 10px;
+    font-size: 10.5px;
+    color: #a1a1aa;
+    background: #0f0f11;
+  }
+  :scope b {
+    color: #e4e4e7;
+    font-weight: 600;
   }
 }

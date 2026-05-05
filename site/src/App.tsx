@@ -9,8 +9,14 @@ import "./components/button.capsule.css";
 import "./components/frameworks.capsule.css";
 import "./components/compat.capsule.css";
 
-import { Nav, NavInner, NavBrandGroup, NavBrand, NavAlpha, NavLinks, NavLink, NavGitHub, Footer, FooterCode } from "./components/layout.capsule.css";
-import { HeroWrap, HeroEyebrow, HeroTitle, HeroSub, HeroActions, HeroDemo } from "./components/hero.capsule.css";
+import { Nav, NavInner, NavBrandGroup, NavBrand, NavAlpha, NavLinks, NavLink, NavGitHub, Footer, FooterLinks, FooterLink, FooterCode } from "./components/layout.capsule.css";
+import {
+  HeroWrap, HeroEyebrow, HeroTitle, HeroSub, HeroActions, HeroDemo,
+  HeroDemoCard, HeroDemoStep, HeroDemoOutputs,
+  HeroIntellisense, HeroIntellisenseList, HeroIntellisenseItem,
+  HeroIntellisenseIcon, HeroIntellisenseKey, HeroIntellisenseHint,
+  HeroIntellisenseDoc,
+} from "./components/hero.capsule.css";
 import { Section, SectionInner, SectionLabel, SectionTitle, SectionDesc } from "./components/section.capsule.css";
 import { FeatureGrid, FeatureCard, FeatureIcon, FeatureTitle, FeatureText } from "./components/card.capsule.css";
 import { CodePair, CodeHeader, CodeDot, CodeFilename, CodePre } from "./components/code.capsule.css";
@@ -19,6 +25,7 @@ import { FrameworkGrid, FrameworkItem, FrameworkStatus, FrameworkIcon } from "./
 import { CompatTable, CompatHeader, CompatFeature, CompatHint, CompatCell, CompatDot, CompatNote } from "./components/compat.capsule.css";
 import { Code } from "./components/Code";
 import { highlight } from "./lib/highlight";
+import { url } from "./lib/url";
 
 const CSS_EXAMPLE = `/* Plain CSS — no new syntax */
 @scope (.Button) {
@@ -41,6 +48,22 @@ const CSS_EXAMPLE = `/* Plain CSS — no new syntax */
     border: 1.5px solid #d1d5db;
   }
 }`;
+
+const HERO_VANILLA = `import { Button } from "./button.capsule.css";
+
+const cta = Button({
+  intent: "primary",
+  href: "/docs",
+  children: "Get started",
+});`;
+
+const HERO_REACT = `import { Button } from "./button.capsule.css";
+
+export const Cta = () => (
+  <Button intent="primary" href="/docs">
+    Get started
+  </Button>
+);`;
 
 const TSX_EXAMPLE = `import { Button } from "./button.capsule.css";
 
@@ -143,13 +166,13 @@ export default function App() {
       <Nav>
         <NavInner>
           <NavBrandGroup>
-            <NavBrand href="/">💊 capsule-css</NavBrand>
+            <NavBrand href={url("/")}>💊 capsule-css</NavBrand>
             <NavAlpha>alpha</NavAlpha>
           </NavBrandGroup>
           <NavLinks>
-            <NavLink href="/docs.html">Docs</NavLink>
-            <NavLink href="/starter.html">Starter</NavLink>
-            <NavLink href="/agents.md">Agents</NavLink>
+            <NavLink href={url("/docs.html")}>Docs</NavLink>
+            <NavLink href={url("/starter.html")} hide="sm">Starter</NavLink>
+            <NavLink href={url("/agents.md")} hide="md">Agents</NavLink>
             <NavGitHub href="https://github.com/capsule-css/capsule-css" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                 <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z" />
@@ -160,7 +183,7 @@ export default function App() {
       </Nav>
 
       <HeroWrap>
-        <HeroEyebrow>Typed components from native CSS @scope</HeroEyebrow>
+        <HeroEyebrow>Fully typed components from native CSS @scope</HeroEyebrow>
         <HeroTitle>
           Write CSS.{" "}
           <span style={{ color: "#0066ff" }}>Import</span> the component.
@@ -175,21 +198,70 @@ export default function App() {
           >
             <code style={{ color: "inherit" }}>@scope</code>
           </a>{" "}
-          CSS in, typed React or vanilla JS components out. No DSL,
-          no runtime, no class-name hashing — just the CSS you already write.
+          CSS in, <strong style={{ color: "inherit", fontWeight: 700 }}>fully typed</strong>{" "}
+          components out — for any framework. No DSL, no runtime, no class-name
+          hashing — just the CSS you already write.
         </HeroSub>
         <HeroActions>
-          <Button intent="primary" href="/starter.html">Try the starter</Button>
+          <Button intent="primary" href={url("/starter.html")}>Try the starter</Button>
           <Button intent="outline" href="https://github.com/capsule-css/capsule-css" target="_blank" rel="noopener noreferrer">Star on GitHub</Button>
         </HeroActions>
         <HeroDemo>
-          <CodeHeader>
-            <CodeDot color="red" />
-            <CodeDot color="yellow" />
-            <CodeDot color="green" />
-            <CodeFilename>button.capsule.css</CodeFilename>
-          </CodeHeader>
-          <CodePre dangerouslySetInnerHTML={{ __html: highlight(CSS_EXAMPLE, "css") }} />
+          <HeroDemoCard>
+            <CodeHeader>
+              <CodeDot color="red" />
+              <CodeDot color="yellow" />
+              <CodeDot color="green" />
+              <CodeFilename>button.capsule.css</CodeFilename>
+            </CodeHeader>
+            <CodePre dangerouslySetInnerHTML={{ __html: highlight(CSS_EXAMPLE, "css") }} />
+          </HeroDemoCard>
+
+          <HeroDemoStep>↓ generates fully typed components ↓</HeroDemoStep>
+
+          <HeroDemoOutputs>
+            {/* Vanilla first — IntelliSense floats over it on purpose:
+                the strongest framework-agnostic message is "you get full
+                typed autocomplete even without a framework". */}
+            <HeroDemoCard overflow>
+              <CodeHeader>
+                <CodeDot color="red" />
+                <CodeDot color="yellow" />
+                <CodeDot color="green" />
+                <CodeFilename>cta.ts</CodeFilename>
+              </CodeHeader>
+              <CodePre dangerouslySetInnerHTML={{ __html: highlight(HERO_VANILLA, "typescript") }} />
+
+              {/* Static IntelliSense mock — illustrates the typed `intent` prop. */}
+              <HeroIntellisense aria-hidden="true">
+                <HeroIntellisenseList>
+                  <HeroIntellisenseItem active>
+                    <HeroIntellisenseIcon>P</HeroIntellisenseIcon>
+                    <HeroIntellisenseKey active>"primary"</HeroIntellisenseKey>
+                    <HeroIntellisenseHint active>string</HeroIntellisenseHint>
+                  </HeroIntellisenseItem>
+                  <HeroIntellisenseItem>
+                    <HeroIntellisenseIcon>P</HeroIntellisenseIcon>
+                    <HeroIntellisenseKey>"outline"</HeroIntellisenseKey>
+                    <HeroIntellisenseHint>string</HeroIntellisenseHint>
+                  </HeroIntellisenseItem>
+                </HeroIntellisenseList>
+                <HeroIntellisenseDoc>
+                  (property) <b>intent?: "primary" | "outline"</b>
+                </HeroIntellisenseDoc>
+              </HeroIntellisense>
+            </HeroDemoCard>
+
+            <HeroDemoCard>
+              <CodeHeader>
+                <CodeDot color="red" />
+                <CodeDot color="yellow" />
+                <CodeDot color="green" />
+                <CodeFilename>Cta.tsx</CodeFilename>
+              </CodeHeader>
+              <CodePre dangerouslySetInnerHTML={{ __html: highlight(HERO_REACT, "typescript") }} />
+            </HeroDemoCard>
+          </HeroDemoOutputs>
         </HeroDemo>
       </HeroWrap>
 
@@ -332,6 +404,12 @@ export default function App() {
       </Section>
 
       <Footer>
+        <FooterLinks>
+          <FooterLink href={url("/docs.html")}>Docs</FooterLink>
+          <FooterLink href={url("/starter.html")}>Starter</FooterLink>
+          <FooterLink href={url("/agents.md")}>Agents</FooterLink>
+          <FooterLink href="https://github.com/capsule-css/capsule-css" target="_blank" rel="noopener noreferrer">GitHub</FooterLink>
+        </FooterLinks>
         <p>
           Built with 💊 capsule-css ·{" "}
           <FooterCode>{"import { Footer } from './layout.capsule.css'"}</FooterCode>

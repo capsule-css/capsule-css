@@ -22,6 +22,12 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 12px;
+
+    @media (max-width: 640px) {
+      padding: 0 16px;
+      height: 52px;
+    }
   }
 }
 
@@ -31,6 +37,8 @@
     display: flex;
     align-items: center;
     gap: 8px;
+    min-width: 0;
+    flex-shrink: 1;
   }
 }
 
@@ -42,6 +50,11 @@
     color: #111827;
     text-decoration: none;
     letter-spacing: -0.02em;
+    white-space: nowrap;
+
+    @media (max-width: 480px) {
+      font-size: 14px;
+    }
   }
   @media (prefers-color-scheme: dark) { :scope { color: #fafafa; } }
 }
@@ -58,6 +71,12 @@
     border-radius: 4px;
     padding: 1px 5px;
     line-height: 1.6;
+    flex-shrink: 0;
+
+    /* On phones the alpha pill eats space we'd rather give to nav links. */
+    @media (max-width: 480px) {
+      display: none;
+    }
   }
   @media (prefers-color-scheme: dark) {
     :scope {
@@ -75,6 +94,7 @@
     color: #6b7280;
     text-decoration: none;
     transition: color 0.15s;
+    flex-shrink: 0;
     &:hover { color: #111827; }
   }
   @media (prefers-color-scheme: dark) {
@@ -89,9 +109,13 @@
     align-items: center;
     gap: 28px;
     margin-left: auto;
+    flex-shrink: 0;
 
-    @media (max-width: 480px) {
+    @media (max-width: 640px) {
       gap: 16px;
+    }
+    @media (max-width: 380px) {
+      gap: 12px;
     }
   }
 }
@@ -102,8 +126,20 @@
     font-size: 14px;
     color: #6b7280;
     text-decoration: none;
+    white-space: nowrap;
     &:hover { color: #111827; }
   }
+
+  /* Hide non-essential links on small viewports so the brand never wraps.
+     - hide="md" → hidden ≤ 640px (tablet portrait)
+     - hide="sm" → hidden ≤ 480px (phones) */
+  :scope[data-hide="md"] {
+    @media (max-width: 640px) { display: none; }
+  }
+  :scope[data-hide="sm"] {
+    @media (max-width: 480px) { display: none; }
+  }
+
   @media (prefers-color-scheme: dark) {
     :scope { color: #71717a; &:hover { color: #fafafa; } }
   }
@@ -121,6 +157,31 @@
   }
   @media (prefers-color-scheme: dark) {
     :scope { border-top-color: #27272a; color: #52525b; }
+  }
+}
+
+@scope (.FooterLinks) {
+  @tag nav;
+  :scope {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px 24px;
+    margin: 0 0 20px;
+    font-size: 13px;
+  }
+}
+
+@scope (.FooterLink) {
+  @tag a;
+  :scope {
+    color: #6b7280;
+    text-decoration: none;
+    transition: color 0.15s;
+    &:hover { color: #111827; }
+  }
+  @media (prefers-color-scheme: dark) {
+    :scope { color: #71717a; &:hover { color: #fafafa; } }
   }
 }
 
