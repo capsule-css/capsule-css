@@ -3,88 +3,70 @@
   :scope {
     display: grid;
     grid-template-columns: minmax(180px, 1fr) repeat(4, minmax(110px, 1fr));
-    margin-top: 40px;
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
-    overflow: hidden;
-    background: #ffffff;
-    font-size: 13px;
-  }
-  @media (prefers-color-scheme: dark) {
-    :scope { background: #18181b; border-color: #27272a; }
+    margin-top: 32px;
+    border: var(--hairline) solid var(--line);
+    background: var(--bg);
+    font-family: var(--font-mono);
+    font-size: 12.5px;
   }
 }
 
 @scope (.CompatHeader) {
   @tag div;
   :scope {
-    padding: 12px 16px;
-    background: #f9fafb;
+    padding: 14px 16px;
+    background: var(--ink);
+    color: var(--bg);
     font-size: 11px;
     font-weight: 700;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: #6b7280;
-    border-bottom: 1px solid #e5e7eb;
     display: flex;
     align-items: center;
     gap: 8px;
-  }
-  @media (prefers-color-scheme: dark) {
-    :scope { background: #09090b; color: #71717a; border-bottom-color: #27272a; }
   }
 }
 
 @scope (.CompatFeature) {
   @tag div;
   :scope {
-    padding: 14px 16px;
-    border-bottom: 1px solid #f3f4f6;
-    font-weight: 600;
-    color: #111827;
+    padding: 16px;
+    border-top: var(--hairline) solid var(--line);
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--ink);
     display: flex;
     flex-direction: column;
     gap: 2px;
-  }
-  &[data-last] { border-bottom: none; }
-  @media (prefers-color-scheme: dark) {
-    :scope { color: #fafafa; border-bottom-color: #27272a; }
   }
 }
 
 @scope (.CompatHint) {
   @tag span;
   :scope {
+    font-family: var(--font-mono);
     font-size: 11px;
     font-weight: 400;
-    color: #9ca3af;
-  }
-  @media (prefers-color-scheme: dark) {
-    :scope { color: #71717a; }
+    color: var(--mute);
+    letter-spacing: 0.02em;
   }
 }
 
 @scope (.CompatCell) {
   @tag div;
   :scope {
-    padding: 14px 16px;
-    border-bottom: 1px solid #f3f4f6;
+    padding: 16px;
+    border-top: var(--hairline) solid var(--line);
+    border-left: var(--hairline) solid var(--line);
     display: flex;
     align-items: center;
     gap: 8px;
     font-variant-numeric: tabular-nums;
-    color: #374151;
+    color: var(--ink);
   }
-  &[data-last] { border-bottom: none; }
-  :scope[data-status="full"]    { color: #15803d; }
-  :scope[data-status="partial"] { color: #a16207; }
-  :scope[data-status="none"]    { color: #9ca3af; }
-  @media (prefers-color-scheme: dark) {
-    :scope { color: #a1a1aa; border-bottom-color: #27272a; }
-    :scope[data-status="full"]    { color: #4ade80; }
-    :scope[data-status="partial"] { color: #facc15; }
-    :scope[data-status="none"]    { color: #52525b; }
-  }
+  :scope[data-status="full"]    { color: var(--ink); }
+  :scope[data-status="partial"] { color: var(--accent); }
+  :scope[data-status="none"]    { color: var(--mute); }
 }
 
 @scope (.CompatDot) {
@@ -92,7 +74,7 @@
   :scope {
     width: 8px;
     height: 8px;
-    border-radius: 50%;
+    border-radius: 0;
     flex-shrink: 0;
     background: currentColor;
   }
@@ -101,12 +83,13 @@
 @scope (.CompatNote) {
   @tag p;
   :scope {
-    margin: 16px 0 0;
-    font-size: 13px;
-    color: #6b7280;
-    line-height: 1.5;
+    margin: 20px 0 0;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--mute);
+    line-height: 1.6;
+    letter-spacing: 0.02em;
   }
-  @media (prefers-color-scheme: dark) {
-    :scope { color: #71717a; }
-  }
+  :scope a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+  :scope a:hover { color: var(--accent); }
 }

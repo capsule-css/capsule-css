@@ -11,7 +11,7 @@
   :scope {
     flex: 1;
     min-width: 0;
-    padding: 48px 72px 96px;
+    padding: 56px 72px 96px;
     max-width: 1000px;
 
     @media (max-width: 768px) {
@@ -23,11 +23,11 @@
 @scope (.DocSection) {
   @tag section;
   :scope {
-    margin-bottom: 72px;
+    margin-bottom: 80px;
     scroll-margin-top: 72px;
 
     @media (max-width: 768px) {
-      margin-bottom: 48px;
+      margin-bottom: 56px;
       scroll-margin-top: 80px;
     }
   }
@@ -36,41 +36,48 @@
 @scope (.DocTitle) {
   @tag h1;
   :scope {
-    font-size: 2rem;
-    font-weight: 800;
-    letter-spacing: -0.03em;
-    color: #111827;
-    margin: 0 0 12px;
-
-    @media (max-width: 768px) {
-      font-size: 1.6rem;
-    }
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    line-height: 0.98;
+    color: var(--ink);
+    margin: 0 0 16px;
   }
-  @media (prefers-color-scheme: dark) { :scope { color: #fafafa; } }
 }
 
 @scope (.DocLead) {
   @tag p;
   :scope {
     font-size: 17px;
-    color: #6b7280;
-    line-height: 1.75;
-    margin: 0 0 40px;
-    max-width: 600px;
+    color: var(--mute);
+    line-height: 1.6;
+    margin: 0 0 48px;
+    max-width: 640px;
   }
-  @media (prefers-color-scheme: dark) { :scope { color: #71717a; } }
+  :scope code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    background: var(--surface-2);
+    border: var(--hairline) solid var(--line);
+    padding: 0 4px;
+    color: var(--ink);
+  }
+  :scope a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+  :scope a:hover { color: var(--accent); }
 }
 
 @scope (.DocHeading) {
   @tag h2;
   :scope {
-    font-size: 1.35rem;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    color: #111827;
-    margin: 0 0 12px;
+    font-family: var(--font-display);
+    font-size: 1.55rem;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+    margin: 0 0 16px;
     padding-top: 56px;
-    border-top: 1px solid #f3f4f6;
+    border-top: var(--hairline) solid var(--line);
     scroll-margin-top: 72px;
 
     @media (max-width: 768px) {
@@ -78,68 +85,89 @@
       scroll-margin-top: 80px;
     }
   }
-  @media (prefers-color-scheme: dark) {
-    :scope { color: #fafafa; border-top-color: #27272a; }
-  }
 }
 
 @scope (.DocSubheading) {
   @tag h3;
   :scope {
-    font-size: 1rem;
+    font-family: var(--font-display);
+    font-size: 1.05rem;
     font-weight: 700;
-    color: #111827;
-    margin: 32px 0 10px;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+    margin: 36px 0 12px;
     scroll-margin-top: 72px;
   }
-  @media (prefers-color-scheme: dark) { :scope { color: #d4d4d8; } }
 }
 
 @scope (.DocProse) {
   @tag p;
   :scope {
-    font-size: 15px;
-    color: #374151;
+    font-size: 15.5px;
+    color: var(--ink);
     line-height: 1.75;
     margin: 0 0 16px;
   }
-  @media (prefers-color-scheme: dark) { :scope { color: #71717a; } }
+  :scope code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    background: var(--surface-2);
+    border: var(--hairline) solid var(--line);
+    padding: 0 4px;
+    color: var(--ink);
+  }
+  :scope a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+  :scope a:hover { color: var(--accent); }
+  :scope ol, :scope ul { padding-left: 24px; margin: 8px 0 16px; }
+  :scope li { margin-bottom: 6px; }
 }
 
 @scope (.DocNote) {
   @tag div;
   :scope {
-    padding: 14px 18px;
-    border-radius: 8px;
-    border-left: 3px solid #e5e7eb;
-    background: #f9fafb;
-    font-size: 14px;
-    color: #374151;
+    padding: 16px 20px;
+    border-radius: 0;
+    border: var(--hairline) solid var(--line);
+    border-left-width: 4px;
+    background: var(--bg);
+    font-size: 14.5px;
+    color: var(--ink);
     line-height: 1.65;
     margin: 20px 0;
+    position: relative;
   }
-  :scope[data-type="info"]    { border-color: #0066ff; background: #eff6ff; color: #1e40af; }
-  :scope[data-type="warning"] { border-color: #f59e0b; background: #fffbeb; color: #92400e; }
-  :scope[data-type="tip"]     { border-color: #10b981; background: #f0fdf4; color: #065f46; }
-  @media (prefers-color-scheme: dark) {
-    :scope { background: #18181b; border-color: #3f3f46; color: #71717a; }
-    :scope[data-type="info"]    { background: #18181b; border-color: #1d4ed8; color: #93c5fd; }
-    :scope[data-type="warning"] { background: #18181b; border-color: #d97706; color: #fcd34d; }
-    :scope[data-type="tip"]     { background: #18181b; border-color: #059669; color: #6ee7b7; }
+  :scope::before {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--mute);
+    margin-bottom: 6px;
+    content: '// note';
   }
+  :scope[data-type="info"]    { border-left-color: var(--ink); }
+  :scope[data-type="info"]::before    { content: '// info'; color: var(--ink); }
+  :scope[data-type="warning"] { border-left-color: var(--accent); }
+  :scope[data-type="warning"]::before { content: '// warning'; color: var(--accent); }
+  :scope[data-type="tip"]     { border-left-color: var(--accent); }
+  :scope[data-type="tip"]::before     { content: '// tip'; color: var(--accent); }
 }
 
 @scope (.DocShell) {
   @tag pre;
   :scope {
-    background: #111827;
-    border-radius: 8px;
-    padding: 16px 20px;
-    font-size: 13px;
-    color: #e2e8f0;
-    margin: 12px 0 20px;
+    background: var(--code-bg);
+    border: var(--hairline) solid var(--line);
+    border-radius: 0;
+    padding: 18px 22px;
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    color: var(--code-fg);
+    margin: 12px 0 24px;
     overflow-x: auto;
-    line-height: 1.6;
+    line-height: 1.7;
   }
 }
 

@@ -94,7 +94,13 @@ function DocApp() {
       <Nav>
         <NavInner>
           <NavBrandGroup>
-            <NavBrand href={url("/")}>💊 capsule-css</NavBrand>
+            <NavBrand href={url("/")}>
+              <picture>
+                <source srcSet={url("/capsule-dark.png")} media="(prefers-color-scheme: dark)" />
+                <img src={url("/capsule.png")} alt="" width="22" height="22" />
+              </picture>
+              capsule-css
+            </NavBrand>
             <NavAlpha>alpha</NavAlpha>
           </NavBrandGroup>
           <NavLinks>
@@ -850,7 +856,11 @@ function DocApp() {
           <FooterLink href="https://github.com/capsule-css/capsule-css" target="_blank" rel="noopener noreferrer">GitHub</FooterLink>
         </FooterLinks>
         <p>
-          Built with 💊 capsule-css ·{" "}
+          <picture>
+            <source srcSet={url("/capsule-dark.png")} media="(prefers-color-scheme: dark)" />
+            <img src={url("/capsule.png")} alt="" width="16" height="16" />
+          </picture>
+          {" "}Built with capsule-css ·{" "}
           <FooterCode>{"import { Footer } from './layout.capsule.css'"}</FooterCode>
         </p>
       </Footer>

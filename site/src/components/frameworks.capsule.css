@@ -3,8 +3,10 @@
   :scope {
     display: flex;
     flex-wrap: wrap;
-    gap: 12px;
-    margin-top: 40px;
+    gap: 0;
+    margin-top: 32px;
+    border-top: var(--hairline) solid var(--line);
+    border-left: var(--hairline) solid var(--line);
   }
 }
 
@@ -13,71 +15,53 @@
   :scope {
     display: inline-flex;
     align-items: center;
-    gap: 10px;
-    padding: 10px 16px;
-    border-radius: 10px;
-    border: 1px solid #e5e7eb;
-    background: #ffffff;
-    font-size: 14px;
-    font-weight: 600;
-    color: #374151;
+    gap: 12px;
+    flex: 1 1 240px;
+    padding: 20px 22px;
+    border-right: var(--hairline) solid var(--line);
+    border-bottom: var(--hairline) solid var(--line);
+    background: var(--bg);
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
   }
   :scope[data-status="available"] {
-    border-color: #bfdbfe;
-    background: #eff6ff;
-    color: #1d4ed8;
+    background: var(--ink);
+    color: var(--bg);
   }
   :scope[data-status="soon"] {
-    background: #ffffff;
-    border-color: #e5e7eb;
-    color: #9ca3af;
-  }
-  @media (prefers-color-scheme: dark) {
-    :scope {
-      background: #18181b;
-      border-color: #27272a;
-      color: #71717a;
-    }
-    :scope[data-status="available"] {
-      background: #18181b;
-      border-color: #3f3f46;
-      color: #a1a1aa;
-    }
-    :scope[data-status="soon"] {
-      background: #18181b;
-      border-color: #27272a;
-      color: #52525b;
-    }
+    background: var(--bg);
+    color: var(--mute);
   }
 }
 
 @scope (.FrameworkStatus) {
   @tag span;
   :scope {
+    font-family: var(--font-mono);
     font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.05em;
+    font-weight: 600;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
     padding: 2px 6px;
-    border-radius: 4px;
-    background: #f3f4f6;
-    color: #9ca3af;
+    border: var(--hairline) solid currentColor;
+    color: var(--mute);
     margin-left: auto;
+    flex-shrink: 0;
   }
   :scope[data-type="available"] {
-    background: #dcfce7;
-    color: #15803d;
-  }
-  @media (prefers-color-scheme: dark) {
-    :scope { background: #09090b; color: #52525b; }
-    :scope[data-type="available"] { background: #14532d; color: #4ade80; }
+    color: var(--accent);
+    background: var(--accent-on);
+    border-color: var(--accent);
   }
 }
 
 @scope (.FrameworkIcon) {
   @tag span;
   :scope {
-    font-size: 20px;
+    font-size: 22px;
     line-height: 1;
+    filter: grayscale(0);
   }
 }

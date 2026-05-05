@@ -3,18 +3,20 @@
   :scope {
     display: inline-flex;
     align-items: center;
-    font-size: 11px;
+    font-family: var(--font-mono);
+    font-size: 10px;
     font-weight: 700;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
     padding: 3px 8px;
-    border-radius: 6px;
-    background: #f3f4f6;
-    color: #374151;
+    border-radius: 0;
+    border: var(--hairline) solid var(--code-mute);
+    background: transparent;
+    color: var(--code-mute);
   }
-  :scope[data-intent="react"] { background: #eff6ff; color: #2563eb; }
-  :scope[data-intent="vanilla"] { background: #fef9c3; color: #a16207; }
-  :scope[data-intent="css"] { background: #f0fdf4; color: #15803d; }
-  :scope[data-intent="go"] { background: #f0f9ff; color: #0369a1; }
-  :scope[data-intent="ts"] { background: #eff6ff; color: #1d4ed8; }
+  :scope[data-intent="react"]   { color: var(--accent); border-color: var(--accent); }
+  :scope[data-intent="vanilla"] { color: var(--accent); border-color: var(--accent); }
+  :scope[data-intent="css"]     { color: var(--accent); border-color: var(--accent); }
+  :scope[data-intent="go"]      { color: var(--accent-2); border-color: var(--accent-2); }
+  :scope[data-intent="ts"]      { color: var(--accent-2); border-color: var(--accent-2); }
 }

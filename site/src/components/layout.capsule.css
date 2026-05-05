@@ -4,13 +4,8 @@
     position: sticky;
     top: 0;
     z-index: 50;
-    background: rgba(250, 250, 250, 0.85);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-bottom: 1px solid #e5e7eb;
-  }
-  @media (prefers-color-scheme: dark) {
-    :scope { background: rgba(9, 9, 11, 0.85); border-bottom-color: #27272a; }
+    background: var(--bg);
+    border-bottom: var(--hairline) solid var(--line);
   }
 }
 
@@ -36,7 +31,7 @@
   :scope {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     min-width: 0;
     flex-shrink: 1;
   }
@@ -45,43 +40,51 @@
 @scope (.NavBrand) {
   @tag a;
   :scope {
-    font-size: 15px;
-    font-weight: 700;
-    color: #111827;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--ink);
     text-decoration: none;
     letter-spacing: -0.02em;
     white-space: nowrap;
 
     @media (max-width: 480px) {
       font-size: 14px;
+      gap: 6px;
     }
   }
-  @media (prefers-color-scheme: dark) { :scope { color: #fafafa; } }
+  :scope picture { display: inline-flex; }
+  :scope img {
+    display: block;
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+
+    @media (max-width: 480px) {
+      width: 18px;
+      height: 18px;
+    }
+  }
 }
 
 @scope (.NavAlpha) {
   @tag span;
   :scope {
+    font-family: var(--font-mono);
     font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 0.04em;
+    font-weight: 600;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: #7c3aed;
-    border: 1px solid #c4b5fd;
-    border-radius: 4px;
-    padding: 1px 5px;
-    line-height: 1.6;
+    color: var(--ink);
+    border: var(--hairline) solid var(--ink);
+    padding: 2px 6px;
+    line-height: 1.4;
     flex-shrink: 0;
 
-    /* On phones the alpha pill eats space we'd rather give to nav links. */
     @media (max-width: 480px) {
       display: none;
-    }
-  }
-  @media (prefers-color-scheme: dark) {
-    :scope {
-      color: #8b5cf6;
-      border-color: #4c1d95;
     }
   }
 }
@@ -91,14 +94,11 @@
   :scope {
     display: flex;
     align-items: center;
-    color: #6b7280;
+    color: var(--ink);
     text-decoration: none;
     transition: color 0.15s;
     flex-shrink: 0;
-    &:hover { color: #111827; }
-  }
-  @media (prefers-color-scheme: dark) {
-    :scope { color: #71717a; &:hover { color: #fafafa; } }
+    &:hover { color: var(--accent); }
   }
 }
 
@@ -124,39 +124,43 @@
   @tag a;
   :scope {
     font-size: 14px;
-    color: #6b7280;
+    font-weight: 500;
+    color: var(--ink);
     text-decoration: none;
     white-space: nowrap;
-    &:hover { color: #111827; }
+    transition: color 0.15s;
+    &:hover { color: var(--accent); }
   }
 
-  /* Hide non-essential links on small viewports so the brand never wraps.
-     - hide="md" → hidden ≤ 640px (tablet portrait)
-     - hide="sm" → hidden ≤ 480px (phones) */
   :scope[data-hide="md"] {
     @media (max-width: 640px) { display: none; }
   }
   :scope[data-hide="sm"] {
     @media (max-width: 480px) { display: none; }
   }
-
-  @media (prefers-color-scheme: dark) {
-    :scope { color: #71717a; &:hover { color: #fafafa; } }
-  }
 }
 
 @scope (.Footer) {
   @tag footer;
   :scope {
-    border-top: 1px solid #e5e7eb;
-    padding: 40px 24px;
+    border-top: var(--hairline) solid var(--line);
+    padding: 48px 24px;
     text-align: center;
     font-size: 13px;
-    color: #9ca3af;
-    line-height: 1.6;
+    color: var(--mute);
+    line-height: 1.65;
   }
-  @media (prefers-color-scheme: dark) {
-    :scope { border-top-color: #27272a; color: #52525b; }
+  :scope a {
+    color: var(--ink);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  :scope a:hover { color: var(--accent); }
+  :scope picture { display: inline-flex; vertical-align: -3px; }
+  :scope img {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
   }
 }
 
@@ -166,22 +170,23 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 8px 24px;
-    margin: 0 0 20px;
-    font-size: 13px;
+    gap: 8px 28px;
+    margin: 0 0 24px;
+    font-size: 12px;
+    font-family: var(--font-mono);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
   }
 }
 
 @scope (.FooterLink) {
   @tag a;
   :scope {
-    color: #6b7280;
+    color: var(--ink);
     text-decoration: none;
     transition: color 0.15s;
-    &:hover { color: #111827; }
-  }
-  @media (prefers-color-scheme: dark) {
-    :scope { color: #71717a; &:hover { color: #fafafa; } }
+    font-weight: 600;
+    &:hover { color: var(--accent); }
   }
 }
 
@@ -189,12 +194,9 @@
   @tag code;
   :scope {
     font-size: 12px;
-    background: #f3f4f6;
+    background: var(--surface-2);
     padding: 2px 6px;
-    border-radius: 4px;
-    color: #374151;
-  }
-  @media (prefers-color-scheme: dark) {
-    :scope { background: #18181b; color: #71717a; }
+    color: var(--ink);
+    border: var(--hairline) solid var(--line);
   }
 }

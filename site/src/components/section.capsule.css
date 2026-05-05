@@ -1,20 +1,20 @@
 @scope (.Section) {
   @tag section;
   :scope {
-    padding: 80px 24px;
-    background: #fafafa;
-  }
-  :scope[data-alt] { background: #ffffff; border-top: 1px solid #e5e7eb; border-bottom: 1px solid #e5e7eb; }
-  @media (prefers-color-scheme: dark) {
-    :scope { background: #09090b; }
-    :scope[data-alt] { background: #18181b; border-color: #27272a; }
+    padding: 88px 24px;
+    border-top: var(--hairline) solid var(--line);
+    background: var(--bg);
+
+    @media (max-width: 640px) {
+      padding: 56px 20px;
+    }
   }
 }
 
 @scope (.SectionInner) {
   @tag div;
   :scope {
-    max-width: 1100px;
+    max-width: 1280px;
     margin: 0 auto;
   }
 }
@@ -22,35 +22,47 @@
 @scope (.SectionLabel) {
   @tag div;
   :scope {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.1em;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: #0066ff;
-    margin-bottom: 12px;
+    color: var(--accent);
+    margin-bottom: 20px;
   }
+  :scope::before { content: '// '; }
 }
 
 @scope (.SectionTitle) {
   @tag h2;
   :scope {
-    font-size: clamp(1.75rem, 4vw, 2.5rem);
-    font-weight: 800;
-    letter-spacing: -0.03em;
-    color: #111827;
-    margin: 0 0 16px;
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 4.5vw, 3rem);
+    font-weight: 900;
+    letter-spacing: -0.035em;
+    line-height: 0.98;
+    color: var(--ink);
+    margin: 0 0 20px;
+    max-width: 22ch;
   }
-  @media (prefers-color-scheme: dark) { :scope { color: #fafafa; } }
 }
 
 @scope (.SectionDesc) {
   @tag p;
   :scope {
-    font-size: 16px;
-    color: #6b7280;
-    max-width: 540px;
+    font-size: 17px;
+    color: var(--mute);
+    max-width: 620px;
     margin: 0 0 48px;
-    line-height: 1.7;
+    line-height: 1.55;
   }
-  @media (prefers-color-scheme: dark) { :scope { color: #71717a; } }
+  :scope code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    background: var(--surface-2);
+    border: var(--hairline) solid var(--line);
+    padding: 0 4px;
+  }
+  :scope a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+  :scope a:hover { color: var(--accent); }
 }

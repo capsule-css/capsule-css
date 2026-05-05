@@ -3,36 +3,32 @@
   :scope {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
+    font-family: var(--font-display);
     font-size: 14px;
-    font-weight: 600;
-    padding: 10px 20px;
-    border-radius: 8px;
+    font-weight: 700;
+    padding: 13px 22px;
+    border-radius: 0;
+    border: var(--hairline) solid var(--ink);
     text-decoration: none;
     cursor: pointer;
-    transition: opacity 0.15s, box-shadow 0.15s;
-    background: #6b7280;
-    color: #ffffff;
-    border: none;
-    &:hover { opacity: 0.85; }
+    background: var(--bg);
+    color: var(--ink);
+    transition: transform 0.05s ease, background 0.15s ease, color 0.15s ease;
+
+    &:hover { background: var(--ink); color: var(--bg); }
+    &:active { transform: translate(2px, 2px); }
   }
   :scope[data-intent="primary"] {
-    background: #0066ff;
-    color: #ffffff;
-    box-shadow: 0 1px 3px rgba(0, 102, 255, 0.3);
-    &:hover { box-shadow: 0 4px 12px rgba(0, 102, 255, 0.4); opacity: 1; }
+    background: var(--ink);
+    color: var(--bg);
+    border-color: var(--ink);
+    &:hover { background: var(--accent); color: var(--accent-on); border-color: var(--accent); }
   }
   :scope[data-intent="outline"] {
-    background: transparent;
-    color: #374151;
-    border: 1.5px solid #d1d5db;
-    &:hover { border-color: #9ca3af; color: #111827; opacity: 1; }
-  }
-  @media (prefers-color-scheme: dark) {
-    :scope[data-intent="outline"] {
-      color: #a1a1aa;
-      border-color: #3f3f46;
-      &:hover { border-color: #71717a; color: #fafafa; opacity: 1; }
-    }
+    background: var(--bg);
+    color: var(--ink);
+    border-color: var(--ink);
+    &:hover { background: var(--ink); color: var(--bg); }
   }
 }

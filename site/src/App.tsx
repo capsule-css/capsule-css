@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./components/layout.capsule.css";
 import "./components/hero.capsule.css";
 import "./components/section.capsule.css";
@@ -11,8 +11,8 @@ import "./components/compat.capsule.css";
 
 import { Nav, NavInner, NavBrandGroup, NavBrand, NavAlpha, NavLinks, NavLink, NavGitHub, Footer, FooterLinks, FooterLink, FooterCode } from "./components/layout.capsule.css";
 import {
-  HeroWrap, HeroEyebrow, HeroTitle, HeroSub, HeroActions, HeroDemo,
-  HeroDemoCard, HeroDemoStep, HeroDemoOutputs,
+  HeroWrap, HeroIntro, HeroEyebrow, HeroTitle, HeroSub, HeroActions, HeroDemo,
+  HeroDemoCard, HeroTabs, HeroTab,
   HeroIntellisense, HeroIntellisenseList, HeroIntellisenseItem,
   HeroIntellisenseIcon, HeroIntellisenseKey, HeroIntellisenseHint,
   HeroIntellisenseDoc,
@@ -27,25 +27,21 @@ import { Code } from "./components/Code";
 import { highlight } from "./lib/highlight";
 import { url } from "./lib/url";
 
-const CSS_EXAMPLE = `/* Plain CSS — no new syntax */
-@scope (.Button) {
-  @tag a;           /* sets the HTML element */
+const CSS_EXAMPLE = `@scope (.Button) {
+  @tag a;
 
   :scope {
     display: inline-flex;
     padding: 10px 20px;
-    border-radius: 8px;
     font-weight: 600;
   }
 
-  /* data-* selectors become typed props */
   :scope[data-intent="primary"] {
-    background: #0066ff;
-    color: #ffffff;
+    background: #ff3d2e;
+    color: #fff;
   }
   :scope[data-intent="outline"] {
-    background: transparent;
-    border: 1.5px solid #d1d5db;
+    border: 1.5px solid currentColor;
   }
 }`;
 
@@ -101,18 +97,18 @@ const VARIANT_DTS = `export interface BadgeProps
 export function Badge(props: BadgeProps): JSX.Element;`;
 
 const features = [
-  { icon: "📝", title: "Standard CSS syntax",
-    text: "No DSL, no custom format. Just native @scope rules — valid in any editor, linter, or formatter." },
-  { icon: "⚡", title: "Vite-native HMR",
-    text: "CSS changes update instantly without a full reload. Structural changes invalidate the module cleanly." },
-  { icon: "🔒", title: "Type-safe variants",
-    text: "data-* selectors become typed props. Boolean, valued, and mixed variants all covered." },
-  { icon: "📦", title: "Build-time extraction",
-    text: "All scoped CSS is extracted to a single capsule.css file, injected into your HTML automatically." },
-  { icon: "🎨", title: "PostCSS ready",
+  { icon: "01", title: "Standard CSS, no DSL.",
+    text: "Just native @scope rules — valid in any editor, linter, or formatter. Open a .capsule.css file in any browser and it works." },
+  { icon: "02", title: "Type-safe by construction.",
+    text: "data-* selectors become typed props. Boolean, valued, and mixed variants all covered automatically." },
+  { icon: "03", title: "Zero runtime.",
+    text: "No CSS-in-JS, no style injection. Output is a static JS module that sets data-* attributes — that is it." },
+  { icon: "04", title: "Build-time extraction.",
+    text: "All scoped CSS is collected into a single capsule.css file and injected into your HTML automatically." },
+  { icon: "05", title: "Vite-native HMR.",
+    text: "CSS changes update instantly without a reload. Structural changes invalidate the module cleanly." },
+  { icon: "06", title: "PostCSS-native.",
     text: "Runs through your existing PostCSS config — autoprefixer, cssnano, anything you already have." },
-  { icon: "🔧", title: "Zero runtime",
-    text: "No CSS-in-JS, no style injection at runtime. Output is a static JS module that sets data-* attributes." },
 ];
 
 type CompatStatus = "full" | "partial" | "none";
@@ -161,12 +157,20 @@ const frameworks = [
 ];
 
 export default function App() {
+  const [outputMode, setOutputMode] = useState<"js" | "jsx">("js");
+
   return (
     <>
       <Nav>
         <NavInner>
           <NavBrandGroup>
-            <NavBrand href={url("/")}>💊 capsule-css</NavBrand>
+            <NavBrand href={url("/")}>
+              <picture>
+                <source srcSet={url("/capsule-dark.png")} media="(prefers-color-scheme: dark)" />
+                <img src={url("/capsule.png")} alt="" width="22" height="22" />
+              </picture>
+              capsule-css
+            </NavBrand>
             <NavAlpha>alpha</NavAlpha>
           </NavBrandGroup>
           <NavLinks>
@@ -183,56 +187,64 @@ export default function App() {
       </Nav>
 
       <HeroWrap>
-        <HeroEyebrow>Fully typed components from native CSS @scope</HeroEyebrow>
-        <HeroTitle>
-          Write CSS.{" "}
-          <span style={{ color: "#0066ff" }}>Import</span> the component.
-        </HeroTitle>
-        <HeroSub>
-          Standard{" "}
-          <a
-            href="https://developer.mozilla.org/en-US/docs/Web/CSS/@scope"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ color: "#0066ff", textDecoration: "underline", textUnderlineOffset: "3px" }}
-          >
-            <code style={{ color: "inherit" }}>@scope</code>
-          </a>{" "}
-          CSS in, <strong style={{ color: "inherit", fontWeight: 700 }}>fully typed</strong>{" "}
-          components out — for any framework. No DSL, no runtime, no class-name
-          hashing — just the CSS you already write.
-        </HeroSub>
-        <HeroActions>
-          <Button intent="primary" href={url("/starter.html")}>Try the starter</Button>
-          <Button intent="outline" href="https://github.com/capsule-css/capsule-css" target="_blank" rel="noopener noreferrer">Star on GitHub</Button>
-        </HeroActions>
+        <HeroIntro>
+          <HeroEyebrow>Fully typed components from native CSS @scope</HeroEyebrow>
+          <HeroTitle>
+            Write CSS.<br />Import the <em>component</em>.
+          </HeroTitle>
+          <HeroSub>
+            Standard{" "}
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Web/CSS/@scope"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <code>@scope</code>
+            </a>{" "}
+            CSS in, <strong>fully typed</strong> components out — for any framework.
+            No DSL, no runtime, no class-name hashing — just the CSS you already write.
+          </HeroSub>
+          <HeroActions>
+            <Button intent="primary" href={url("/starter.html")}>Try the starter</Button>
+            <Button intent="outline" href="https://github.com/capsule-css/capsule-css" target="_blank" rel="noopener noreferrer">Star on GitHub</Button>
+          </HeroActions>
+        </HeroIntro>
         <HeroDemo>
+          {/* Left: the CSS source — the actual file you write. */}
           <HeroDemoCard>
             <CodeHeader>
-              <CodeDot color="red" />
-              <CodeDot color="yellow" />
-              <CodeDot color="green" />
               <CodeFilename>button.capsule.css</CodeFilename>
             </CodeHeader>
             <CodePre dangerouslySetInnerHTML={{ __html: highlight(CSS_EXAMPLE, "css") }} />
           </HeroDemoCard>
 
-          <HeroDemoStep>↓ generates fully typed components ↓</HeroDemoStep>
+          {/* Right: the generated output, toggle JS / JSX. The IntelliSense
+              mock floats over the JS view on purpose — strongest framework-
+              agnostic message is "even vanilla JS gets typed autocomplete". */}
+          <HeroDemoCard overflow={outputMode === "js"}>
+            <HeroTabs>
+              <HeroTab
+                type="button"
+                active={outputMode === "js"}
+                onClick={() => setOutputMode("js")}
+                aria-pressed={outputMode === "js"}
+              >
+                cta.ts
+              </HeroTab>
+              <HeroTab
+                type="button"
+                active={outputMode === "jsx"}
+                onClick={() => setOutputMode("jsx")}
+                aria-pressed={outputMode === "jsx"}
+              >
+                Cta.tsx
+              </HeroTab>
+            </HeroTabs>
+            <CodePre dangerouslySetInnerHTML={{
+              __html: highlight(outputMode === "js" ? HERO_VANILLA : HERO_REACT, "typescript"),
+            }} />
 
-          <HeroDemoOutputs>
-            {/* Vanilla first — IntelliSense floats over it on purpose:
-                the strongest framework-agnostic message is "you get full
-                typed autocomplete even without a framework". */}
-            <HeroDemoCard overflow>
-              <CodeHeader>
-                <CodeDot color="red" />
-                <CodeDot color="yellow" />
-                <CodeDot color="green" />
-                <CodeFilename>cta.ts</CodeFilename>
-              </CodeHeader>
-              <CodePre dangerouslySetInnerHTML={{ __html: highlight(HERO_VANILLA, "typescript") }} />
-
-              {/* Static IntelliSense mock — illustrates the typed `intent` prop. */}
+            {outputMode === "js" && (
               <HeroIntellisense aria-hidden="true">
                 <HeroIntellisenseList>
                   <HeroIntellisenseItem active>
@@ -250,18 +262,8 @@ export default function App() {
                   (property) <b>intent?: "primary" | "outline"</b>
                 </HeroIntellisenseDoc>
               </HeroIntellisense>
-            </HeroDemoCard>
-
-            <HeroDemoCard>
-              <CodeHeader>
-                <CodeDot color="red" />
-                <CodeDot color="yellow" />
-                <CodeDot color="green" />
-                <CodeFilename>Cta.tsx</CodeFilename>
-              </CodeHeader>
-              <CodePre dangerouslySetInnerHTML={{ __html: highlight(HERO_REACT, "typescript") }} />
-            </HeroDemoCard>
-          </HeroDemoOutputs>
+            )}
+          </HeroDemoCard>
         </HeroDemo>
       </HeroWrap>
 
@@ -286,7 +288,7 @@ export default function App() {
         </SectionInner>
       </Section>
 
-      <Section data-alt id="frameworks">
+      <Section id="frameworks">
         <SectionInner>
           <SectionLabel>Framework agnostic</SectionLabel>
           <SectionTitle>One stylesheet, any framework</SectionTitle>
@@ -318,7 +320,7 @@ export default function App() {
             runtime. The only relatively new piece is the{" "}
             <code>@scope</code> at-rule, which shipped in Chrome 118 and
             Safari 17.4. Firefox is expected to follow — track progress on{" "}
-            <a href="https://caniuse.com/css-cascade-scope" target="_blank" rel="noopener noreferrer" style={{ color: "#0066ff" }}>
+            <a href="https://caniuse.com/css-cascade-scope" target="_blank" rel="noopener noreferrer">
               caniuse.com
             </a>. Until then, target modern Chromium/Safari, or wait for the
             planned <code>legacyScope</code> compile option that lowers{" "}
@@ -364,7 +366,7 @@ export default function App() {
           </CompatTable>
           <CompatNote>
             Always check{" "}
-            <a href="https://caniuse.com/css-cascade-scope" target="_blank" rel="noopener noreferrer" style={{ color: "#0066ff" }}>
+            <a href="https://caniuse.com/css-cascade-scope" target="_blank" rel="noopener noreferrer">
               caniuse.com
             </a>{" "}
             for the most recent numbers — these are kept manually and may lag.
@@ -372,7 +374,7 @@ export default function App() {
         </SectionInner>
       </Section>
 
-      <Section data-alt id="syntax">
+      <Section id="syntax">
         <SectionInner>
           <SectionLabel>Syntax</SectionLabel>
           <SectionTitle>Write CSS, import components</SectionTitle>
@@ -411,7 +413,11 @@ export default function App() {
           <FooterLink href="https://github.com/capsule-css/capsule-css" target="_blank" rel="noopener noreferrer">GitHub</FooterLink>
         </FooterLinks>
         <p>
-          Built with 💊 capsule-css ·{" "}
+          <picture>
+            <source srcSet={url("/capsule-dark.png")} media="(prefers-color-scheme: dark)" />
+            <img src={url("/capsule.png")} alt="" width="16" height="16" />
+          </picture>
+          {" "}Built with capsule-css ·{" "}
           <FooterCode>{"import { Footer } from './layout.capsule.css'"}</FooterCode>
         </p>
         <p style={{ marginTop: "12px", fontSize: "13px", opacity: 0.7 }}>

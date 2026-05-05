@@ -2,36 +2,36 @@
   @tag div;
   :scope {
     display: inline-flex;
-    background: #f3f4f6;
-    border-radius: 8px;
-    padding: 3px;
-    gap: 2px;
-    margin-bottom: 36px;
+    border: var(--hairline) solid var(--line);
+    border-radius: 0;
+    padding: 0;
+    gap: 0;
+    margin-bottom: 32px;
   }
-  @media (prefers-color-scheme: dark) { :scope { background: #27272a; } }
 }
 
 @scope (.FwBtn) {
   @tag button;
   :scope {
-    padding: 5px 16px;
-    border-radius: 6px;
-    font-size: 13px;
-    font-weight: 600;
+    padding: 6px 16px;
+    border-radius: 0;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
     border: none;
+    border-right: var(--hairline) solid var(--line);
     cursor: pointer;
-    background: transparent;
-    color: #6b7280;
-    transition: all 0.1s;
-    &:hover { color: #374151; }
+    background: var(--bg);
+    color: var(--mute);
+    transition: background 0.1s, color 0.1s;
+    &:hover { color: var(--ink); }
+    &:last-child { border-right: none; }
   }
   :scope[data-active] {
-    background: #ffffff;
-    color: #111827;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  }
-  @media (prefers-color-scheme: dark) {
-    :scope { color: #71717a; &:hover { color: #a1a1aa; } }
-    :scope[data-active] { background: #3f3f46; color: #fafafa; box-shadow: none; }
+    background: var(--ink);
+    color: var(--bg);
+    box-shadow: none;
   }
 }
