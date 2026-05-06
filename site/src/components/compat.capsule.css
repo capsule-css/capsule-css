@@ -8,6 +8,18 @@
     background: var(--bg);
     font-family: var(--font-mono);
     font-size: 12.5px;
+
+    /* On narrow viewports the grid's min-content (~620px) would force the
+       page wider than the screen. Allow the container to shrink below
+       min-content and scroll its tracks horizontally instead. */
+    @media (max-width: 760px) {
+      min-width: 0;
+      max-width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      grid-template-columns: minmax(150px, 1.2fr) repeat(4, minmax(90px, 1fr));
+      font-size: 11.5px;
+    }
   }
 }
 
@@ -24,6 +36,11 @@
     display: flex;
     align-items: center;
     gap: 8px;
+
+    @media (max-width: 760px) {
+      padding: 12px 14px;
+      gap: 6px;
+    }
   }
 }
 
@@ -38,6 +55,10 @@
     display: flex;
     flex-direction: column;
     gap: 2px;
+
+    @media (max-width: 760px) {
+      padding: 12px 14px;
+    }
   }
 }
 
@@ -63,6 +84,11 @@
     gap: 8px;
     font-variant-numeric: tabular-nums;
     color: var(--ink);
+
+    @media (max-width: 760px) {
+      padding: 12px 14px;
+      gap: 6px;
+    }
   }
   :scope[data-status="full"]    { color: var(--ink); }
   :scope[data-status="partial"] { color: var(--accent); }
