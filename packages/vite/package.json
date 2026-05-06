@@ -1,6 +1,6 @@
 {
   "name": "@capsule-css/vite",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Vite plugin for capsule-css — typed components from plain @scope CSS",
   "repository": "github:capsule-css/capsule-css",
   "license": "MIT",

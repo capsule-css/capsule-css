@@ -1,6 +1,6 @@
 {
   "name": "@capsule-css/core",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "capsule-css core — invokes the platform binary to compile .capsule.css files",
   "repository": "github:capsule-css/capsule-css",
   "license": "MIT",
